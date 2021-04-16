@@ -1,12 +1,12 @@
 # MusicClassification
 
 ## Topic:
-    Music Classification
+Music Classification
 ## Reason for Topic:
-    Music is cool. There are different files for music and visuals that 
-    would be really interesting to categorize and have the machine train a model
-    based on a diverse dataset, and create a visualization for how the data interacts
-    with each other.
+   Music is cool. There are different files for music and visuals that 
+   would be really interesting to categorize and have the machine train a model
+   based on a diverse dataset, and create a visualization for how the data interacts
+   with each other.
 ## Description of data:
 The data comes from the GTZAN Genre collection used in the paper " Musical genre classification of audio signals " by G. Tzanetakis and P. Cook. It holds .wav audio files, Mel Spectrogram images as .png files, and two .csv files which describe various features of the songs. There are over one-thousand song samples. 
 ## Question we hope to answer:
