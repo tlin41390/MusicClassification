@@ -1,3 +1,8 @@
+# MacOS Stuff
+.DS_Store
+Data/
+archive.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
