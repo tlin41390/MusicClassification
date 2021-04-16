@@ -12,3 +12,6 @@ The data comes from the GTZAN Genre collection used in the paper " Musical genre
 ## Question we hope to answer:
 Given the variety of data, we will compare methods for classifying music. The first method will 
 be running the audio files through a machine learning model, and grouping them. Method two will be grouping based on the image files, and the third method will be using the data from the .CSV files. 
+## Communication Protocols: 
+- Always commit work to personal branch.
+- Once personal branch is ready for merging with main, create pull request, and choose at least one person to review.
