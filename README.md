@@ -20,10 +20,10 @@ be running the audio files through a machine learning model, and grouping them. 
 
 Used following steps:
 
-1) Ran **brew services list** to show mongo installation
-2) Launched mongo shell
-3) Updated mongodb database by first creating a mongodb database in the mongo shell.
-4) Used the command: **mongofiles -d=<database_name> put <file_name>**. This inserted a csv file into our database.
+1) Run `brew services list` to show mongo installation
+2) Launch mongo shell
+3) Update mongodb database by first creating a mongodb database in the mongo shell.
+4) Use the command: `mongofiles -d=<database_name> put <file_name>`. This inserts a csv file into the database.
 
 
 
