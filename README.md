@@ -1,15 +1,15 @@
 # MusicClassification
 
-## Topic:
+## Topic
 Music Classification
 
-## Reason for Topic:
+## Reason for Topic
 Music is cool. There are different files for music and visuals that 
 are interesting to categorize by genre and train a machine learning model
 to classify this data set, and we further plan to create visualizations
 illustrating data relationships.
 
-## Description of data:
+## Description of data
 The data comes from the GTZAN Genre collection used in the paper "Musical
 genre classification of audio signals" by G. Tzanetakis and P. Cook. It
 contains `.wav` audio files, Mel Spectrogram images as `.png` files, and two
@@ -17,14 +17,14 @@ contains `.wav` audio files, Mel Spectrogram images as `.png` files, and two
 tempo, rms chromatic shift, etc, over a three second and 30 second sample.
 There are over 9990 songs in this data set.
 
-## Question we hope to answer:
+## Question we hope to answer
 Given the variety of data, we will compare methods for classifying music. The
 first method will be classifiying the genre of audio files based on numerical
 features using machine learning, the second method classifying genres based on
 the Mel Spectrogram image files, and the third method classifiying genres from
 the raw `.wav` audio files.
 
-## Communication Protocols: 
+## Communication Protocols
 - Always commit work to personal branch.
 - Once personal branch is ready for merging with main, create pull request,
 and choose at least one person to review.
@@ -121,4 +121,3 @@ results:
 - `sklearn.neighbors.KNeigborsClassifier(n_neighbors=21)`: 28% accuracy
 - `sklearn.naive_bayes.GaussianNB()`: 43% accuracy
 - `sklearn.ensemble.RandomForestClassifier()`: 88% accuracy
-
