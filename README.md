@@ -117,8 +117,8 @@ the statistical features of each song taken over a three second sample in
 9990 songs eaching belonging to one of ten genres (our target classes). After
 initial training with minimal hyper-parameter tuning, we obtain the following
 results:
-- `sklearn.tree.DecisionTreeClassifier()`: 64% accuracy
+- `sklearn.tree.DecisionTreeClassifier()`: 63% accuracy
 - `sklearn.neighbors.KNeigborsClassifier(n_neighbors=21)`: 28% accuracy
 - `sklearn.naive_bayes.GaussianNB()`: 43% accuracy
-- `sklearn.ensemble.RandomForestClassifier()`: 87% accuracy
+- `sklearn.ensemble.RandomForestClassifier()`: 88% accuracy
 
