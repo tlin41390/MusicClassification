@@ -4,24 +4,25 @@
 Music Classification
 
 ## Reason for Topic:
-
 Music is cool. There are different files for music and visuals that 
-would be really interesting to categorize and have the machine train a model
-based on a diverse dataset, and create a visualization for how the data
-interacts with each other.
+are interesting to categorize by genre and train a machine learning model
+to classify this data set, and we further plan to create visualizations
+illustrating data relationships.
 
 ## Description of data:
 The data comes from the GTZAN Genre collection used in the paper "Musical
-genre classification of audio signals" by G. Tzanetakis and P. Cook. It holds
-.wav audio files, Mel Spectrogram images as .png files, and two .csv files
-which describe various features of the songs. There are over one-thousand song
-samples.
+genre classification of audio signals" by G. Tzanetakis and P. Cook. It
+contains `.wav` audio files, Mel Spectrogram images as `.png` files, and two
+`.csv` files containing statistical features of the songs such as average
+tempo, rms chromatic shift, etc, over a three second and 30 second sample.
+There are over 9990 songs in this data set.
 
 ## Question we hope to answer:
 Given the variety of data, we will compare methods for classifying music. The
-first method will  be running the audio files through a machine learning
-model, and grouping them. Method two will be grouping based on the image
-files, and the third method will be using the data from the .CSV files.
+first method will be classifiying the genre of audio files based on numerical
+features using machine learning, the second method classifying genres based on
+the Mel Spectrogram image files, and the third method classifiying genres from
+the raw `.wav` audio files.
 
 ## Communication Protocols: 
 - Always commit work to personal branch.
@@ -29,6 +30,7 @@ files, and the third method will be using the data from the .CSV files.
 and choose at least one person to review.
 
 ## Database Usage
+### Mongo Interface
 To launch and load data into a MongoDB database, use the following steps
 (MacOS):
 
@@ -80,11 +82,43 @@ fs.files
 { "_id" : ObjectId("607b34eb92ce0e4b44de0138"), "length" : NumberLong(10713), "chunkSize" : 261120, "uploadDate" : ISODate("2021-04-17T19:20:11.849Z"), "filename" : "features_3_sec.csv", "metadata" : {  } }
 ```
 
-* Read in the file into a jupyter notebook from Mongodb database.
-* Convert byte string into a regular string using `.decode("utf-8")`.
-* Make converted string into a pandas dataframe. 
+### Python Interface
+1) Read in the file einto a jupyter notebook from Mongodb database using
+`pymongo.MongoClient`, then instantiate the database:
+```
+from pymongo import MongoClient
+client = MongoClient()
+db = client["Music_db"]
+```
+2) Create a GridFS file instance and get the last version of the input file:
+```
+import gridfs
+fs = gridfs.GridFS(db)
+features_raw = fs.get_last_version(infile)  # infile = value for "filename" key in output of db.fs.files.find() above
+bytes_string = features_raw.read()
+```
+3) Convert byte string returned by `features_raw.read()` into a regular
+string: using `.decode("utf-8")`:
+```
+data_string = bytes_string.decode("utf-8")
+``` 
+4) Read converted string into a pandas dataframe using `pd.read_csv`:
+```
+from io import StringIO
+import pandas as pd
+data_string_IO = StringIO(data_string)
+features_df = pd.read_csv(data_string_IO)
+``` 
 
-
-
-
+### Machine Learning Model
+We first classify music genres by training various machine learning models on
+the statistical features of each song taken over a three second sample in
+[`features_3_sec.csv`](Data_Sample/features_3_sec.csv). This sample contains
+9990 songs eaching belonging to one of ten genres (our target classes). After
+initial training with minimal hyper-parameter tuning, we obtain the following
+results:
+- `sklearn.tree.DecisionTreeClassifier()`: 64% accuracy
+- `sklearn.neighbors.KNeigborsClassifier(n_neighbors=21)`: 28% accuracy
+- `sklearn.naive_bayes.GaussianNB()`: 43% accuracy
+- `sklearn.ensemble.RandomForestClassifier()`: 87% accuracy
 
