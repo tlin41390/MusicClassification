@@ -2,28 +2,83 @@
 
 ## Topic:
 Music Classification
+
 ## Reason for Topic:
-   Music is cool. There are different files for music and visuals that 
-   would be really interesting to categorize and have the machine train a model
-   based on a diverse dataset, and create a visualization for how the data interacts
-   with each other.
+
+Music is cool. There are different files for music and visuals that 
+would be really interesting to categorize and have the machine train a model
+based on a diverse dataset, and create a visualization for how the data
+interacts with each other.
+
 ## Description of data:
-The data comes from the GTZAN Genre collection used in the paper " Musical genre classification of audio signals " by G. Tzanetakis and P. Cook. It holds .wav audio files, Mel Spectrogram images as .png files, and two .csv files which describe various features of the songs. There are over one-thousand song samples. 
+The data comes from the GTZAN Genre collection used in the paper "Musical
+genre classification of audio signals" by G. Tzanetakis and P. Cook. It holds
+.wav audio files, Mel Spectrogram images as .png files, and two .csv files
+which describe various features of the songs. There are over one-thousand song
+samples.
+
 ## Question we hope to answer:
-Given the variety of data, we will compare methods for classifying music. The first method will 
-be running the audio files through a machine learning model, and grouping them. Method two will be grouping based on the image files, and the third method will be using the data from the .CSV files. 
+Given the variety of data, we will compare methods for classifying music. The
+first method will  be running the audio files through a machine learning
+model, and grouping them. Method two will be grouping based on the image
+files, and the third method will be using the data from the .CSV files.
+
 ## Communication Protocols: 
 - Always commit work to personal branch.
-- Once personal branch is ready for merging with main, create pull request, and choose at least one person to review.
+- Once personal branch is ready for merging with main, create pull request,
+and choose at least one person to review.
 
-## Database updates/commands
+## Database Usage
+To launch and load data into a MongoDB database, use the following steps
+(MacOS):
 
-Use the following steps:
+1) Install MongoDB using Homebrew by following the appropriate section of its
+[installation instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/):
+2) Check successful installation:
+```
+$ brew services list
+Name              Status  User Plist
+mongodb-community stopped
+```
+3) Start `mongdb-community` service:
+```
+$ brew services start mongodb-community
+==> Successfully started `mongodb-community` (label: homebrew.mxcl.mongodb-community)
+```
+4) Launch MongoDB shell:
+```
+$ mongo
+```
+3) Create new MongoDB database using the mongo shell:
+```
+> use Music_db
+```
+4) Exit the mongo shell using `<CTRL+D>`.
+5) Add the `.csv` file to the database using `mongofiles` and the data file's
+relative path:
+```
+$ mongofiles -d=Music_db put features_3_sec.csv
+2021-04-17T12:20:11.546-0700	connected to: mongodb://localhost/
+2021-04-17T12:20:11.547-0700	adding gridFile: features_3_sec.csv
 
-1) Run `brew services list` to show mongo installation
-2) Launch mongo shell
-3) Update mongodb database by first creating a mongodb database in the mongo shell.
-4) Use the command: `mongofiles -d=<database_name> put <file_name>`. This inserts a csv file into the database.
+2021-04-17T12:20:11.849-0700	added gridFile: features_3_sec.csv
+```
+6) Ensure successful storage in the database from the command line:
+```
+$ mongofiles -d=Music_db list
+2021-04-17T12:22:58.153-0700	connected to: mongodb://localhost/
+features_3_sec.csv	1071
+```
+7) Check file storage within the mongo shell:
+```
+$ mongo
+> use Music_db
+> show collections
+fs.chunks
+fs.files
+> db.fs.files.find()
+{ "_id" : ObjectId("607b34eb92ce0e4b44de0138"), "length" : NumberLong(10713), "chunkSize" : 261120, "uploadDate" : ISODate("2021-04-17T19:20:11.849Z"), "filename" : "features_3_sec.csv", "metadata" : {  } }
+```
 
 * Read in the file into a jupyter notebook from Mongodb database.
 * Convert byte string into a regular string using `.decode("utf-8")`.
