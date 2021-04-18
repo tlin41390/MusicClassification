@@ -18,13 +18,16 @@ be running the audio files through a machine learning model, and grouping them. 
 
 ## Database updates/commands
 
-Used following steps:
+Use the following steps:
 
 1) Run `brew services list` to show mongo installation
 2) Launch mongo shell
 3) Update mongodb database by first creating a mongodb database in the mongo shell.
 4) Use the command: `mongofiles -d=<database_name> put <file_name>`. This inserts a csv file into the database.
 
+* Read in the file into a jupyter notebook from Mongodb database.
+* Convert byte string into a regular string using `.decode("utf-8")`.
+* Make converted string into a pandas dataframe. 
 
 
 
