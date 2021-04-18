@@ -110,7 +110,7 @@ data_string_IO = StringIO(data_string)
 features_df = pd.read_csv(data_string_IO)
 ``` 
 
-### Machine Learning Model
+## Machine Learning Model
 We first classify music genres by training various machine learning models on
 the statistical features of each song taken over a three second sample in
 [`features_3_sec.csv`](Data_Sample/features_3_sec.csv). This sample contains
