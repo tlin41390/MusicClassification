@@ -121,3 +121,6 @@ results:
 - `sklearn.neighbors.KNeigborsClassifier(n_neighbors=21)`: 28% accuracy
 - `sklearn.naive_bayes.GaussianNB()`: 43% accuracy
 - `sklearn.ensemble.RandomForestClassifier()`: 88% accuracy
+
+## Google Slides Presentation
+https://docs.google.com/presentation/d/1mtLgLnwL2p8m_hOIKtAYMIkNlP1axNtIMz0xgWbGiqM/edit?usp=sharing
