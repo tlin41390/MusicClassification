@@ -171,5 +171,25 @@ results:
 - `sklearn.naive_bayes.GaussianNB()`: 43% accuracy
 - `sklearn.ensemble.RandomForestClassifier()`: 88% accuracy
 
+## Neural Network Model
+We next define a deep layer neural network to classify music genres from the
+Mel Spectrogram images following
+[How to train neural networks for image classification - Part 1](https://medium.com/nerd-for-tech/how-to-train-neural-networks-for-image-classification-part-1-21327fe1cc1)
+as an example. We thus define a Sequential Model with the following
+architecture and parameters:
+- Input layer with 124416 inputs (image_width * image_height = 288 * 432)
+- One Dense layer with 300 nodes follwed by four Dense layers with 100 nodes
+each
+- Ouput layer with 10 output nodes for the 10 music genres to classify
+- `relu` activation function at each hidden layer
+- `softmax` activation function at outputer layer
+- `sparse_categorical_crossentropy` loss function
+- `sgd` optimizer
+- `accuracy` metric
+
+Results:
+- Testing Loss: 1.8947
+- Testing Accuracy: 29%
+
 ## Google Slides Presentation
 https://docs.google.com/presentation/d/1mtLgLnwL2p8m_hOIKtAYMIkNlP1axNtIMz0xgWbGiqM/edit?usp=sharing
