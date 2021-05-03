@@ -39,26 +39,31 @@ To launch and load data into a MongoDB database, use the following steps
 (MacOS):
 
 1) Install MongoDB using Homebrew by following the appropriate section of its
-[installation instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/):
+[installation instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)
+
 2) Check successful installation:
 ```
 $ brew services list
 Name              Status  User Plist
 mongodb-community stopped
 ```
+
 3) Start `mongdb-community` service:
 ```
 $ brew services start mongodb-community
 ==> Successfully started `mongodb-community` (label: homebrew.mxcl.mongodb-community)
 ```
+
 4) Launch MongoDB shell:
 ```
 $ mongo
 ```
+
 5) Create new MongoDB database using the mongo shell:
 ```
 > use Music_db
 ```
+
 6) Exit the mongo shell using `<CTRL+D>`.
 
 #### Automatic Data Loading
@@ -95,6 +100,7 @@ Data/images_original/blues/blues00001.png	44518
 Data/images_original/blues/blues00002.png	80395
 ...
 ```
+
 9) Check all data storage within the mongo shell:
 ```
 $ mongo
@@ -124,6 +130,7 @@ features_3_df = pd.DataFrame(list(collection))
 features_3_df = features_3_df.drop(columns = ["_id"])
 ```
 with a similar process for the 30 second sample features.
+
 2) Create a GridFS file instance and get load the image files:
 ```
 import gridfs
