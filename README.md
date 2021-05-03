@@ -14,8 +14,12 @@ The data comes from the GTZAN Genre collection used in the paper "Musical
 genre classification of audio signals" by G. Tzanetakis and P. Cook. It
 contains `.wav` audio files, Mel Spectrogram images as `.png` files, and two
 `.csv` files containing statistical features of the songs such as average
-tempo, rms chromatic shift, etc, over a three second and 30 second sample.
-There are over 9990 songs in this data set.
+tempo, rms chromatic shift, etc, over three second and 30 second samples.
+The data set as a whole contains 1000 songs processed as follows:
+[1000 wave files](Data/genres_original),
+[999 Mel Spectrogram images](Data/images_original),
+[1000 samples of statistical features from 30 second song samples](Data/features_30_sec.csv),
+and [9990 samples statistical features from 3 second song sample](Data/features_3_sec.csv).
 
 ## Question we hope to answer
 Given the variety of data, we will compare methods for classifying music. The
@@ -51,64 +55,109 @@ $ brew services start mongodb-community
 ```
 $ mongo
 ```
-3) Create new MongoDB database using the mongo shell:
+5) Create new MongoDB database using the mongo shell:
 ```
 > use Music_db
 ```
-4) Exit the mongo shell using `<CTRL+D>`.
-5) Add the `.csv` file to the database using `mongofiles` and the data file's
-relative path:
-```
-$ mongofiles -d=Music_db put features_3_sec.csv
-2021-04-17T12:20:11.546-0700	connected to: mongodb://localhost/
-2021-04-17T12:20:11.547-0700	adding gridFile: features_3_sec.csv
+6) Exit the mongo shell using `<CTRL+D>`.
 
-2021-04-17T12:20:11.849-0700	added gridFile: features_3_sec.csv
+#### Automatic Data Loading
+7a) Automatic population of the database `Music_db` created in steps 1-4 is
+accomplished by opening and running all cells in the Jupyter Notebook
+`Load_Data.ipynb`.
+
+#### Manual Data Loading
+7b) Alternatively, one can manually load data into `Music_db` as follows: For CSV Data:
 ```
-6) Ensure successful storage in the database from the command line:
+$ mongoimport -d <database_name> -c <collection_name> --type csv --file <path_to_csv_file> --headerline
+```
+And for the image/wave data:
+```
+$ mongofiles -d=<database_name> put <path_to_png_or_wav_file>
+```
+If loading data manually, ensure to update `config.py` with the chosen
+database and collection. Also note that `mongofiles` will set the `filename`
+field of each document in the GridFS `fs.files` collection to the
+`<path_to_png_or_wav_file>`. One should therefore run the `mongofiles` command
+from the root of this repository since this relative path is used to extract
+the data from MongoDB in `Music_Classification.ipynb`.
+
+8) Check image and wave file storage from the command line:
 ```
 $ mongofiles -d=Music_db list
 2021-04-17T12:22:58.153-0700	connected to: mongodb://localhost/
-features_3_sec.csv	1071
+Data/genres_original/blues/blues.00000.wav	1323632
+Data/genres_original/blues/blues.00001.wav	1323632
+Data/genres_original/blues/blues.00002.wav	1323632
+...
+Data/images_original/blues/blues00000.png	62497
+Data/images_original/blues/blues00001.png	44518
+Data/images_original/blues/blues00002.png	80395
+...
 ```
-7) Check file storage within the mongo shell:
+9) Check all data storage within the mongo shell:
 ```
 $ mongo
 > use Music_db
+switched to db Music_db
 > show collections
+feat_3
+feat_30
 fs.chunks
 fs.files
 > db.fs.files.find()
-{ "_id" : ObjectId("607b34eb92ce0e4b44de0138"), "length" : NumberLong(10713), "chunkSize" : 261120, "uploadDate" : ISODate("2021-04-17T19:20:11.849Z"), "filename" : "features_3_sec.csv", "metadata" : {  } }
+{ "_id" : ObjectId("608f7c89d7c281d7d5f7d3ec"), "length" : NumberLong(1323632), "chunkSize" : 261120, "uploadDate" : ISODate("2021-05-03T04:31:05.605Z"), "filename" : "Data/genres_original/blues/blues.00000.wav", "metadata" : {  } }
+{ "_id" : ObjectId("608f7c89d7c281d7d5f7d3ec"), "length" : NumberLong(1323632), "chunkSize" : 261120, "uploadDate" : ISODate("2021-05-03T04:31:05.605Z"), "filename" : "Data/genres_original/blues/blues.00000.wav", "metadata" : {  } }
+...
 ```
 
 ### Python Interface
-1) Read in the file einto a jupyter notebook from Mongodb database using
+1) Read in the CSV into a jupyter notebook from MongoDB database using
 `pymongo.MongoClient`, then instantiate the database:
 ```
 from pymongo import MongoClient
-client = MongoClient()
-db = client["Music_db"]
+from config import DB_NAME, FEAT_3_COLLECTION_NAME
+client = MongoClient("localhost")
+db = client[DB_NAME]
+collection = db[FEAT_3_COLLECTION_NAME].find()
+features_3_df = pd.DataFrame(list(collection))
+features_3_df = features_3_df.drop(columns = ["_id"])
 ```
-2) Create a GridFS file instance and get the last version of the input file:
+with a similar process for the 30 second sample features.
+2) Create a GridFS file instance and get load the image files:
 ```
 import gridfs
+cwd_bytes = subprocess.check_output("pwd")
+cwd = cwd_bytes.decode("utf-8").rstrip("\n") + "/"
+# identify path for images
+images_path = "Data/images_original/"
+byte_images = subprocess.check_output(["ls", cwd + images_path])
+images_folder = byte_images.decode("utf-8").split("\n")
+images_folder.pop(-1)
+
 fs = gridfs.GridFS(db)
-features_raw = fs.get_last_version(infile)  # infile = value for "filename" key in output of db.fs.files.find() above
-bytes_string = features_raw.read()
+
+images = []
+genres = []
+
+for folder in images_folder:
+    # Get files in each image-genre folder
+    byte_files = subprocess.check_output(["ls", cwd + images_path + folder])
+    files = byte_files.decode("utf-8").split("\n")
+    files.pop(-1)
+    
+    for file in files:
+        # Load image using its relative path as its GridFS identifier
+        file_path = images_path + folder + "/" + file
+        image_raw = fs.get_last_version(file_path)
+        image_bytes = image_raw.read()
+        rgba_image = Image.open(io.BytesIO(image_bytes))
+        rgb_image = rgba_image.convert("RGB")
+        gray_image = ImageOps.grayscale(rgb_image)
+        image_data = np.asarray(gray_image)
+        images.append(image_data)
+        genres.append(folder)
 ```
-3) Convert byte string returned by `features_raw.read()` into a regular
-string: using `.decode("utf-8")`:
-```
-data_string = bytes_string.decode("utf-8")
-``` 
-4) Read converted string into a pandas dataframe using `pd.read_csv`:
-```
-from io import StringIO
-import pandas as pd
-data_string_IO = StringIO(data_string)
-features_df = pd.read_csv(data_string_IO)
-``` 
 
 ## Machine Learning Model
 We first classify music genres by training various machine learning models on
