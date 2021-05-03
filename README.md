@@ -170,8 +170,22 @@ for folder in images_folder:
 We first classify music genres by training various machine learning models on
 the statistical features of each song taken over a three second sample in
 [`features_3_sec.csv`](Data_Sample/features_3_sec.csv). This sample contains
-9990 songs eaching belonging to one of ten genres (our target classes). After
-initial training with minimal hyper-parameter tuning, we obtain the following
+9990 songs eaching belonging to one of ten genres (our target classes).
+
+### Data Preprocessing:
+- Drop unnecessary identification columns `_id` and `filename` along with
+`length` which is constant for all samples.
+- Separate feature data from target genre label.
+- Convert categorical genre target labels to integers 0 through 9.
+- Split data in 75% training and 25% testing using
+`sklearn.model_selection.train_test_split`.
+- Explore the following Models
+    - DecisionTreeClassifier
+    - KNeighborsClassifier
+    - GaussianNB
+    - RandomForestClassifier
+
+After initial training with minimal hyper-parameter tuning, we obtain the following
 results:
 - `sklearn.tree.DecisionTreeClassifier()`: 63% accuracy
 - `sklearn.neighbors.KNeigborsClassifier(n_neighbors=21)`: 28% accuracy
@@ -182,7 +196,13 @@ results:
 We next define a deep layer neural network to classify music genres from the
 Mel Spectrogram images following
 [How to train neural networks for image classification - Part 1](https://medium.com/nerd-for-tech/how-to-train-neural-networks-for-image-classification-part-1-21327fe1cc1)
-as an example. We thus define a Sequential Model with the following
+as an example.
+
+### Data Preprocessing
+- Convert RGBA images to RGB and then to Grayscale.
+- Convert categorical genre labels to integers 0 through 9.
+
+We then define a Sequential Model with the following
 architecture and parameters:
 - Input layer with 124416 inputs (image_width * image_height = 288 * 432)
 - One Dense layer with 300 nodes follwed by four Dense layers with 100 nodes
