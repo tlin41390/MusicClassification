@@ -62,12 +62,12 @@ $ mongo
 6) Exit the mongo shell using `<CTRL+D>`.
 
 #### Automatic Data Loading
-7a) Automatic population of the database `Music_db` created in steps 1-4 is
+7) Automatic population of the database `Music_db` created in steps 1-4 is
 accomplished by opening and running all cells in the Jupyter Notebook
 `Load_Data.ipynb`.
 
-#### Manual Data Loading
-7b) Alternatively, one can manually load data into `Music_db` as follows: For CSV Data:
+#### Optional Manual Data Loading
+Alternatively, one can manually load data into `Music_db` as follows: For CSV Data:
 ```
 $ mongoimport -d <database_name> -c <collection_name> --type csv --file <path_to_csv_file> --headerline
 ```
