@@ -1,0 +1,3 @@
+DB_NAME = "Music_db"
+FEAT_3_COLLECTION_NAME = "feat_3"
+FEAT_30_COLLECTION_NAME = "feat_30"
