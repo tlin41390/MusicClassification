@@ -3,7 +3,7 @@ function init() {
   var selector = d3.select("#selDataset");
 
   // Use the list of sample names to populate the select options
-  d3.json("results.json").then((data) => {
+  d3.json("static/js/results.json").then((data) => {
     var musicClassifier = data.ids;
 
     musicClassifier.forEach((sample) => {
@@ -14,9 +14,9 @@ function init() {
     });
 
     // Use the first sample from the list to build the initial plots
-    var firstSample = sampleNames[0];
+    var firstModel = musicClassifier[0];
     // buildCharts(firstSample);
-    buildMetadata(firstSample);
+    buildMetadata(firstModel);
   });
 }
 
@@ -32,7 +32,7 @@ function optionChanged(newSample) {
 
 // Demographics Panel 
 function buildMetadata(sample) {
-  d3.json("results.json").then((data) => {
+  d3.json("static/js/results.json").then((data) => {
     var metadata = data.metadata;
     console.log(metadata);
     // Filter the data for the object with the desired sample number
