@@ -1,4 +1,141 @@
 {
-    "ids":["0","1","2","3","4"],
-    "metadata":[{"id":0, "model":"Random Forest Classifier", "dataset":"features_30_sec.csv", "accuracy":"68%", "link to classification report":"..."},{"id":1, "model":"Random Forest Classifier", "dataset":"features_3_sec.csv", "accuracy":"90%","link to classification report":"..."}, {"id":2, "model":"K-Means(30 sec)","dataset":"features_30_sec.csv","accuracy":"N/A","link to classification report":"..."}, {"id":3, "model":"K-Means(3 sec)", "dataset":"features_3_sec.csv","accuracy":"N/A","link to classification report":"..."}, {"id":4, "model":"Neural Network", "dataset":"images_orignal", "accuracy":"27%"}]
+    "ids": ["0","1","2","3","4"],
+    "metadata":[
+    {
+        "id":0, 
+        "model":"Random Forest Classifier",
+        "dataset":"features_30_sec.csv",
+        "accuracy":"68%",
+        "link to classification report":"..."
+    },
+    {
+        "id":1,
+        "model":"Random Forest Classifier",
+        "dataset":"features_3_sec.csv",
+        "accuracy":"90%",
+        "link to classification report":"..."
+    },
+    {
+        "id":2,
+        "model":"K-Means",
+        "dataset":"features_30_sec.csv",
+        "accuracy":"N/A",
+        "link to classification report":"..."
+    },
+    {
+        "id":3,
+        "model":"K-Means",
+        "dataset":"features_3_sec.csv",
+        "accuracy":"N/A",
+        "link to classification report":"..."
+    },
+    {
+        "id":4,
+        "model":"Neural Network",
+        "dataset":"images_orignal",
+        "accuracy":"27%"
+    }],
+    "results": [
+    {
+        "id": 0,
+        "precision": {
+            "blues": 0.64,
+            "classical": 0.8666666667,
+            "country": 0.7916666667,
+            "disco": 0.48,
+            "hiphop": 0.5862068966,
+            "jazz": 0.8076923077,
+            "metal": 0.8571428571,
+            "pop": 0.875,
+            "reggae": 0.4347826087,
+            "rock": 0.5161290323
+        },
+        "recall": {
+            "blues": 0.7619047619,
+            "classical": 0.8125,
+            "country": 0.6333333333,
+            "disco": 0.4615384615,
+            "hiphop": 0.6071428571,
+            "jazz": 0.8076923077,
+            "metal": 0.8888888889,
+            "pop": 0.8076923077,
+            "reggae": 0.5,
+            "rock": 0.5333333333
+        },
+        "f1-score": {
+            "blues": 0.6956521739,
+            "classical": 0.8387096774,
+            "country": 0.7037037037,
+            "disco": 0.4705882353,
+            "hiphop": 0.5964912281,
+            "jazz": 0.8076923077,
+            "metal": 0.8727272727,
+            "pop": 0.84,
+            "reggae": 0.4651162791,
+            "rock": 0.5245901639
+        },
+        "support": {
+            "blues": 21.0,
+            "classical": 16.0,
+            "country": 30.0,
+            "disco": 26.0,
+            "hiphop": 28.0,
+            "jazz": 26.0,
+            "metal": 27.0,
+            "pop": 26.0,
+            "reggae": 20.0,
+            "rock": 30.0
+        }
+    },
+    {
+        "id": 1,
+        "precision": {
+            "blues": 0.8700787402,
+            "classical": 0.9375,
+            "country": 0.8424908425,
+            "disco": 0.8448979592,
+            "hiphop": 0.9311740891,
+            "jazz": 0.9011857708,
+            "metal": 0.9266409266,
+            "pop": 0.9227467811,
+            "reggae": 0.9195402299,
+            "rock": 0.9078341014
+        },
+        "recall": {
+            "blues": 0.936440678,
+            "classical": 0.971659919,
+            "country": 0.8745247148,
+            "disco": 0.903930131,
+            "hiphop": 0.8778625954,
+            "jazz": 0.9083665339,
+            "metal": 0.9266409266,
+            "pop": 0.8884297521,
+            "reggae": 0.9056603774,
+            "rock": 0.8073770492
+        },
+        "f1-score": {
+            "blues": 0.9020408163,
+            "classical": 0.9542743539,
+            "country": 0.8582089552,
+            "disco": 0.8734177215,
+            "hiphop": 0.9037328094,
+            "jazz": 0.9047619048,
+            "metal": 0.9266409266,
+            "pop": 0.9052631579,
+            "reggae": 0.9125475285,
+            "rock": 0.8546637744
+        },
+        "support": {
+            "blues": 236.0,
+            "classical": 247.0,
+            "country": 263.0,
+            "disco": 229.0,
+            "hiphop": 262.0,
+            "jazz": 251.0,
+            "metal": 259.0,
+            "pop": 242.0,
+            "reggae": 265.0,
+            "rock": 244.0
+        }
+    }]
 }
