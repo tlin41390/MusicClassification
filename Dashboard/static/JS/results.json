@@ -1,0 +1,4 @@
+{
+    "ids":["0","1","2","3","4"],
+    "metadata":[{"id":0, "model":"Random Forest Classifier", "dataset":"features_30_sec.csv", "accuracy":"68%", "link to classification report":"..."},{"id":1, "model":"Random Forest Classifier", "dataset":"features_3_sec.csv", "accuracy":"90%","link to classification report":"..."}, {"id":2, "model":"K-Means(30 sec)","dataset":"features_30_sec.csv","accuracy":"N/A","link to classification report":"..."}, {"id":3, "model":"K-Means(3 sec)", "dataset":"features_3_sec.csv","accuracy":"N/A","link to classification report":"..."}, {"id":4, "model":"Neural Network", "dataset":"images_orignal", "accuracy":"27%"}]
+}
