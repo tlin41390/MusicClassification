@@ -92,12 +92,13 @@ function buildCharts(sample) {
       y: yticks,
       type: "bar",
       orientation:"h",
-//      text: otu_labels 
     }];
 
     // 9. Create the layout for the bar chart. 
     var barLayout = {
-     title: "<b>Precision vs. Genre</b>"
+     title: "<b>Precision vs. Genre</b>",
+     xaxis: {title: "Precision"},
+     yaxis: {title: "Genre"}
     };
 
     // 10. Use Plotly to plot the data with the layout. 
