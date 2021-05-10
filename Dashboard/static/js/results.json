@@ -131,5 +131,56 @@
             "reggae": 265.0,
             "rock": 244.0
         }
+    },
+    {
+        "id": 4,
+        "precision": {
+            "pop": 0.5,
+            "jazz": 0.0,
+            "disco": 0.0,
+            "classical": 0.3076923077,
+            "country": 0.25,
+            "metal": 0.72,
+            "reggae": 0.25,
+            "blues": 0.1238938053,
+            "hiphop": 0.0,
+            "rock": 0.5
+        },
+        "recall": {
+            "pop": 0.04,
+            "jazz": 0.0,
+            "disco": 0.0,
+            "classical": 1.0,
+            "country": 0.2666666667,
+            "metal": 0.6923076923,
+            "reggae": 0.0357142857,
+            "blues": 0.6363636364,
+            "hiphop": 0.0,
+            "rock": 0.0769230769
+        },
+        "f1-score": {
+            "pop": 0.0740740741,
+            "jazz": 0.0,
+            "disco": 0.0,
+            "classical": 0.4705882353,
+            "country": 0.2580645161,
+            "metal": 0.7058823529,
+            "reggae": 0.0625,
+            "blues": 0.2074074074,
+            "hiphop": 0.0,
+            "rock": 0.1333333333
+        },
+        "support": {
+            "pop": 25.0,
+            "jazz": 19.0,
+            "disco": 27.0,
+            "classical": 16.0,
+            "country": 30.0,
+            "metal": 26.0,
+            "reggae": 28.0,
+            "blues": 22.0,
+            "hiphop": 31.0,
+            "rock": 26.0
+        }
     }]
 }
