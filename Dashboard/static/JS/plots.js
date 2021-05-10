@@ -15,7 +15,7 @@ function init() {
 
     // Use the first sample from the list to build the initial plots
     var firstModel = musicClassifier[0];
-    buildCharts(firstSample);
+    buildCharts(firstModel);
     buildMetadata(firstModel);
   });
 }
@@ -34,12 +34,12 @@ function optionChanged(newSample) {
 function buildMetadata(sample) {
   d3.json("static/js/results.json").then((data) => {
     var metadata = data.metadata;
-    console.log(metadata);
+//    console.log(metadata);
     // Filter the data for the object with the desired sample number
     var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
     var result = resultArray[0];
-    console.log(resultArray);
-    console.log(result);
+//    console.log(resultArray);
+//    console.log(result);
     // Use d3 to select the panel with id of `#sample-metadata`
     var PANEL = d3.select("#sample-metadata");
 
@@ -62,16 +62,16 @@ function buildCharts(sample) {
   d3.json("static/js/results.json").then((data) => {
     // 3. Create a variable that holds the samples array. 
     var sampleArray = data.results;
+//    console.log(sampleArray);
     // 4. Create a variable that filters the samples for the object with the desired sample number.
     var filter = sampleArray.filter(sampleObj => sampleObj.id == sample);
     //  5. Create a variable that holds the first sample in the array.
     var getFirst = filter[0];
+    console.log(getFirst);
 
-    // 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
+    // 6. Create variable that holds the precision.
     var prec = getFirst.precision;
-    var rec = getFirst.rec;
-    var f1 = getFirst.f1;
-    var support = getFirst.support;
+    console.log(prec)
 
     // 7. Create the yticks for the bar chart.
     // Hint: Get the the top 10 otu_ids and map them in descending order  
@@ -82,13 +82,13 @@ function buildCharts(sample) {
 //    var topTenId = sortId.slice(0,10);
 //    var yticks = topTenId.reverse();
 
-    yticks = Object.keys(getFirst.precision).forEach(function(key) {
-      var value = getFirst.precision[key]
-    });
+    xValue = Object.values(prec)
+    yticks = Object.keys(prec);
+    console.log(yticks);
 
     // 8. Create the trace for the bar chart. 
     var barData = [{
-      x: prec,
+      x: xValue,
       y: yticks,
       type: "bar",
       orientation:"h",
