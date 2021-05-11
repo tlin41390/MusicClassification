@@ -29,7 +29,6 @@ init();
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
   var sel_val = sel.options[sel.selectedIndex].value;
-  console.log(sel_val);
   buildMetadata(newSample);
   buildCharts(newSample, sel_val);
   
@@ -64,15 +63,13 @@ function buildMetadata(sample) {
 function buildCharts(sample, sel_val) {
   // Use d3.json to load and retrieve the samples.json file 
   d3.json("static/js/results.json").then((data) => {
-
+    var sampleArray = data.results;
+    // Create a variable that filters the samples for the object with the desired sample number.
+    var filter = sampleArray.filter(sampleObj => sampleObj.id == sample);
+    // Create a variable that holds the first sample in the array.
+    var getFirst = filter[0];
     // Create a variable that holds the samples array.
     if (sel_val == 0 || sel_val == 1 || sel_val == 4) {
-      var sampleArray = data.results;
-      // Create a variable that filters the samples for the object with the desired sample number.
-      var filter = sampleArray.filter(sampleObj => sampleObj.id == sample);
-      // Create a variable that holds the first sample in the array.
-      var getFirst = filter[0];
-
       // Create variable that holds the precision.
       var prec = getFirst.precision;
 
@@ -89,9 +86,9 @@ function buildCharts(sample, sel_val) {
 
       // Create the layout for the bar chart. 
       var barLayout = {
-      title: "<b>Precision vs. Genre</b>",
-      xaxis: {title: "Precision"},
-      yaxis: {title: "Genre"}
+        title: "<b>Precision vs. Genre</b>",
+        xaxis: {title: "Precision"},
+        yaxis: {title: "Genre"}
       };
 
       // Use Plotly to plot the data with the layout. 
@@ -100,15 +97,69 @@ function buildCharts(sample, sel_val) {
   
     // Handle the KMeans models:
     if (sel_val == 2 || sel_val == 3) {
-      // Placholder bar chart
-      var barData = [{
-        x: [5, 6, 7, 8],
-        y: [0, 1, 2, 3],
-        type: "bar",
-        orientation: "h"
-      }];
-      Plotly.newPlot("bar", barData);
+      plots = [];
+      for (const [key, value] of Object.entries(getFirst)) {
+        if (key != "id") {
+          xValue = Object.values(value);
+          yticks = Object.keys(value);
+          barData = {
+            x: xValue,
+            y: yticks,
+            type: "bar",
+            orientation: "h",
+            name: "Predicted " + key
+          }
+          plots.push(barData);
+        }
+      };
 
+      Plotly.newPlot('bar', plots, {
+        updatemenus: [{
+          y: 1.2,
+          yanchor: 'top',
+          buttons: [{
+            method: 'restyle',
+            args: ['visible', [true, false, false, false, false, false, false, false, false, false]],
+            label: 'Predicted jazz'
+          }, {
+            method: 'restyle',
+            args: ['visible', [false, true, false, false, false, false, false, false, false, false]],
+            label: 'Predicted metal'
+          }, {
+            method: 'restyle',
+            args: ['visible', [false, false, true, false, false, false, false, false, false, false]],
+            label: 'Predicted disco'
+          }, {
+            method: 'restyle',
+            args: ['visible', [false, false, false, true, false, false, false, false, false, false]],
+            label: 'Predicted pop'
+          }, {
+            method: 'restyle',
+            args: ['visible', [false, false, false, false, true, false, false, false, false, false]],
+            label: 'Predicted reggae'
+          }, {
+            method: 'restyle',
+            args: ['visible', [false, false, false, false, false, true, false, false, false, false]],
+            label: 'Predicted classical'
+          }, {
+            method: 'restyle',
+            args: ['visible', [false, false, false, false, false, false, true, false, false, false]],
+            label: 'Predicted rock'
+          }, {
+            method: 'restyle',
+            args: ['visible', [false, false, false, false, false, false, false, true, false, false]],
+            label: 'Predicted blues'
+          }, {
+            method: 'restyle',
+            args: ['visible', [false, false, false, false, false, false, false, false, true, false]],
+            label: 'Predicted hiphop'
+          }, {
+            method: 'restyle',
+            args: ['visible', [false, false, false, false, false, false, false, false, false, true]],
+            label: 'Predicted country'
+          }]
+        }],
+      });
     }
   })
 };
