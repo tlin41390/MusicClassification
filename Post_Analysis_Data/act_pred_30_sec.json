@@ -1,5 +1,65 @@
 {
+    "jazz": {
+        "jazz": 0,
+        "metal": 1,
+        "disco": 6,
+        "pop": 0,
+        "reggae": 26,
+        "classical": 1,
+        "rock": 6,
+        "blues": 3,
+        "hiphop": 15,
+        "country": 3
+    },
+    "metal": {
+        "jazz": 8,
+        "metal": 0,
+        "disco": 7,
+        "pop": 11,
+        "reggae": 26,
+        "classical": 4,
+        "rock": 8,
+        "blues": 12,
+        "hiphop": 3,
+        "country": 23
+    },
+    "disco": {
+        "jazz": 1,
+        "metal": 0,
+        "disco": 8,
+        "pop": 40,
+        "reggae": 13,
+        "classical": 0,
+        "rock": 2,
+        "blues": 0,
+        "hiphop": 28,
+        "country": 0
+    },
     "pop": {
+        "jazz": 10,
+        "metal": 11,
+        "disco": 27,
+        "pop": 0,
+        "reggae": 6,
+        "classical": 3,
+        "rock": 23,
+        "blues": 23,
+        "hiphop": 19,
+        "country": 23
+    },
+    "reggae": {
+        "jazz": 3,
+        "metal": 0,
+        "disco": 0,
+        "pop": 4,
+        "reggae": 1,
+        "classical": 4,
+        "rock": 0,
+        "blues": 0,
+        "hiphop": 0,
+        "country": 0
+    },
+    "classical": {
         "jazz": 21,
         "metal": 0,
         "disco": 1,
@@ -7,83 +67,11 @@
         "reggae": 2,
         "classical": 40,
         "rock": 0,
-        "blues": 32,
+        "blues": 31,
         "hiphop": 0,
         "country": 16
     },
-    "classical": {
-        "jazz": 36,
-        "metal": 0,
-        "disco": 0,
-        "pop": 0,
-        "reggae": 2,
-        "classical": 47,
-        "rock": 4,
-        "blues": 7,
-        "hiphop": 0,
-        "country": 9
-    },
-    "blues": {
-        "jazz": 8,
-        "metal": 0,
-        "disco": 7,
-        "pop": 11,
-        "reggae": 28,
-        "classical": 4,
-        "rock": 8,
-        "blues": 11,
-        "hiphop": 3,
-        "country": 23
-    },
     "rock": {
-        "jazz": 1,
-        "metal": 0,
-        "disco": 8,
-        "pop": 40,
-        "reggae": 12,
-        "classical": 0,
-        "rock": 2,
-        "blues": 0,
-        "hiphop": 28,
-        "country": 0
-    },
-    "hiphop": {
-        "jazz": 10,
-        "metal": 11,
-        "disco": 28,
-        "pop": 0,
-        "reggae": 6,
-        "classical": 3,
-        "rock": 25,
-        "blues": 23,
-        "hiphop": 19,
-        "country": 23
-    },
-    "disco": {
-        "jazz": 0,
-        "metal": 1,
-        "disco": 5,
-        "pop": 0,
-        "reggae": 25,
-        "classical": 1,
-        "rock": 4,
-        "blues": 3,
-        "hiphop": 15,
-        "country": 3
-    },
-    "jazz": {
-        "jazz": 16,
-        "metal": 3,
-        "disco": 31,
-        "pop": 10,
-        "reggae": 8,
-        "classical": 1,
-        "rock": 24,
-        "blues": 0,
-        "hiphop": 7,
-        "country": 19
-    },
-    "country": {
         "jazz": 1,
         "metal": 0,
         "disco": 0,
@@ -95,7 +83,19 @@
         "hiphop": 19,
         "country": 1
     },
-    "reggae": {
+    "blues": {
+        "jazz": 36,
+        "metal": 0,
+        "disco": 0,
+        "pop": 0,
+        "reggae": 2,
+        "classical": 47,
+        "rock": 4,
+        "blues": 7,
+        "hiphop": 0,
+        "country": 9
+    },
+    "hiphop": {
         "jazz": 4,
         "metal": 85,
         "disco": 20,
@@ -107,16 +107,16 @@
         "hiphop": 9,
         "country": 6
     },
-    "metal": {
-        "jazz": 3,
-        "metal": 0,
-        "disco": 0,
-        "pop": 4,
-        "reggae": 1,
-        "classical": 4,
-        "rock": 0,
+    "country": {
+        "jazz": 16,
+        "metal": 3,
+        "disco": 31,
+        "pop": 10,
+        "reggae": 8,
+        "classical": 1,
+        "rock": 24,
         "blues": 0,
-        "hiphop": 0,
-        "country": 0
+        "hiphop": 7,
+        "country": 19
     }
 }
