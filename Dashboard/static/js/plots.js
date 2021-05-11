@@ -107,16 +107,21 @@ function buildCharts(sample, sel_val) {
             y: yticks,
             type: "bar",
             orientation: "h",
+            visible: false,
             name: "Predicted " + key
           }
           plots.push(barData);
         }
       };
 
+
       Plotly.newPlot('bar', plots, {
+        title: "<b>Number of Actual Genre Classes<br>For Selected Predicted Genre</b>",
+        xaxis: {title: "Number"},
+        yaxis: {title: "Actual Genre"},
         updatemenus: [{
-          y: 1.2,
-          yanchor: 'top',
+          x: 2,
+          y: 1.5,
           buttons: [{
             method: 'restyle',
             args: ['visible', [true, false, false, false, false, false, false, false, false, false]],
