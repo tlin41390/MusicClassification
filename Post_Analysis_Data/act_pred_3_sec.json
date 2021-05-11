@@ -1,0 +1,122 @@
+{
+    "jazz": {
+        "jazz": 16,
+        "metal": 861,
+        "disco": 234,
+        "pop": 0,
+        "reggae": 27,
+        "classical": 0,
+        "rock": 310,
+        "blues": 253,
+        "hiphop": 130,
+        "country": 72
+    },
+    "metal": {
+        "jazz": 7,
+        "metal": 55,
+        "disco": 238,
+        "pop": 0,
+        "reggae": 130,
+        "classical": 9,
+        "rock": 124,
+        "blues": 170,
+        "hiphop": 222,
+        "country": 124
+    },
+    "disco": {
+        "jazz": 1,
+        "metal": 1,
+        "disco": 2,
+        "pop": 219,
+        "reggae": 73,
+        "classical": 0,
+        "rock": 2,
+        "blues": 0,
+        "hiphop": 163,
+        "country": 2
+    },
+    "pop": {
+        "jazz": 119,
+        "metal": 24,
+        "disco": 269,
+        "pop": 240,
+        "reggae": 54,
+        "classical": 9,
+        "rock": 185,
+        "blues": 0,
+        "hiphop": 93,
+        "country": 108
+    },
+    "reggae": {
+        "jazz": 242,
+        "metal": 2,
+        "disco": 1,
+        "pop": 6,
+        "reggae": 8,
+        "classical": 570,
+        "rock": 32,
+        "blues": 94,
+        "hiphop": 4,
+        "country": 105
+    },
+    "classical": {
+        "jazz": 29,
+        "metal": 12,
+        "disco": 16,
+        "pop": 36,
+        "reggae": 194,
+        "classical": 42,
+        "rock": 20,
+        "blues": 85,
+        "hiphop": 52,
+        "country": 26
+    },
+    "rock": {
+        "jazz": 256,
+        "metal": 39,
+        "disco": 34,
+        "pop": 0,
+        "reggae": 24,
+        "classical": 155,
+        "rock": 160,
+        "blues": 121,
+        "hiphop": 6,
+        "country": 155
+    },
+    "blues": {
+        "jazz": 179,
+        "metal": 1,
+        "disco": 10,
+        "pop": 11,
+        "reggae": 53,
+        "classical": 199,
+        "rock": 13,
+        "blues": 252,
+        "hiphop": 9,
+        "country": 135
+    },
+    "hiphop": {
+        "jazz": 144,
+        "metal": 3,
+        "disco": 119,
+        "pop": 109,
+        "reggae": 228,
+        "classical": 14,
+        "rock": 126,
+        "blues": 25,
+        "hiphop": 75,
+        "country": 255
+    },
+    "country": {
+        "jazz": 7,
+        "metal": 2,
+        "disco": 76,
+        "pop": 379,
+        "reggae": 209,
+        "classical": 0,
+        "rock": 26,
+        "blues": 0,
+        "hiphop": 244,
+        "country": 15
+    }
+}
