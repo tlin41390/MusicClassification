@@ -1,0 +1,18 @@
+{
+    "precision": {
+        "macro avg": 0.9004089441,
+        "weighted avg": 0.900967754
+    },
+    "recall": {
+        "macro avg": 0.9000892677,
+        "weighted avg": 0.8999199359
+    },
+    "f1-score": {
+        "macro avg": 0.8995551949,
+        "weighted avg": 0.8997674083
+    },
+    "support": {
+        "macro avg": 2498.0,
+        "weighted avg": 2498.0
+    }
+}

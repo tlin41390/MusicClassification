@@ -15,18 +15,23 @@ function init() {
 
     // Use the first sample from the list to build the initial plots
     var firstModel = musicClassifier[0];
-    buildCharts(firstModel);
+    buildCharts(firstModel, 0);
     buildMetadata(firstModel);
   });
 }
+
+// Get current model selection:
+var sel = document.getElementById('selDataset');
 
 // Initialize the dashboard
 init();
 
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
+  var sel_val = sel.options[sel.selectedIndex].value;
+  console.log(sel_val);
   buildMetadata(newSample);
-  buildCharts(newSample);
+  buildCharts(newSample, sel_val);
   
 }
 
@@ -34,12 +39,11 @@ function optionChanged(newSample) {
 function buildMetadata(sample) {
   d3.json("static/js/results.json").then((data) => {
     var metadata = data.metadata;
-//    console.log(metadata);
+
     // Filter the data for the object with the desired sample number
     var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
     var result = resultArray[0];
-//    console.log(resultArray);
-//    console.log(result);
+
     // Use d3 to select the panel with id of `#sample-metadata`
     var PANEL = d3.select("#sample-metadata");
 
@@ -56,101 +60,55 @@ function buildMetadata(sample) {
   });
 }
 
-// 1. Create the buildCharts function.
-function buildCharts(sample) {
-  // 2. Use d3.json to load and retrieve the samples.json file 
+// Create the buildCharts function.
+function buildCharts(sample, sel_val) {
+  // Use d3.json to load and retrieve the samples.json file 
   d3.json("static/js/results.json").then((data) => {
-    // 3. Create a variable that holds the samples array. 
-    var sampleArray = data.results;
-//    console.log(sampleArray);
-    // 4. Create a variable that filters the samples for the object with the desired sample number.
-    var filter = sampleArray.filter(sampleObj => sampleObj.id == sample);
-    //  5. Create a variable that holds the first sample in the array.
-    var getFirst = filter[0];
-    console.log(getFirst);
 
-    // 6. Create variable that holds the precision.
-    var prec = getFirst.precision;
-    console.log(prec)
+    // Create a variable that holds the samples array.
+    if (sel_val == 0 || sel_val == 1 || sel_val == 4) {
+      var sampleArray = data.results;
+      // Create a variable that filters the samples for the object with the desired sample number.
+      var filter = sampleArray.filter(sampleObj => sampleObj.id == sample);
+      // Create a variable that holds the first sample in the array.
+      var getFirst = filter[0];
 
-    // 7. Create the yticks for the bar chart.
-    // Hint: Get the the top 10 otu_ids and map them in descending order  
-    //  so the otu_ids with the most bacteria are last. 
-//    var sortId = otu_ids.map(id => "OTU " + id);
-//    var topSamples= sample_values.slice(0,10);
-//    var xValue = topSamples.reverse();
-//    var topTenId = sortId.slice(0,10);
-//    var yticks = topTenId.reverse();
+      // Create variable that holds the precision.
+      var prec = getFirst.precision;
 
-    xValue = Object.values(prec)
-    yticks = Object.keys(prec);
-    console.log(yticks);
+      xValue = Object.values(prec)
+      yticks = Object.keys(prec);
 
-    // 8. Create the trace for the bar chart. 
-    var barData = [{
-      x: xValue,
-      y: yticks,
-      type: "bar",
-      orientation:"h",
-//      text: otu_labels 
-    }];
+      // Create the trace for the bar chart. 
+      var barData = [{
+        x: xValue,
+        y: yticks,
+        type: "bar",
+        orientation: "h",
+      }];
 
-    // 9. Create the layout for the bar chart. 
-    var barLayout = {
-     title: "<b>Precision vs. Genre</b>"
-    };
+      // Create the layout for the bar chart. 
+      var barLayout = {
+      title: "<b>Precision vs. Genre</b>",
+      xaxis: {title: "Precision"},
+      yaxis: {title: "Genre"}
+      };
 
-    // 10. Use Plotly to plot the data with the layout. 
-    Plotly.newPlot("bar", barData, barLayout);
+      // Use Plotly to plot the data with the layout. 
+      Plotly.newPlot("bar", barData, barLayout);
+    }
+  
+    // Handle the KMeans models:
+    if (sel_val == 2 || sel_val == 3) {
+      // Placholder bar chart
+      var barData = [{
+        x: [5, 6, 7, 8],
+        y: [0, 1, 2, 3],
+        type: "bar",
+        orientation: "h"
+      }];
+      Plotly.newPlot("bar", barData);
 
-  //   var bubbleData = [{
-  //     x:otu_ids,
-  //     y: sample_values,
-  //     text: otu_labels,
-  //     mode: "markers",
-  //     marker: {
-  //       size: sample_values,
-  //       color: otu_ids,
-  //       colorscale: true
-  //     }
-  //   }
-  // ];
-
-  // var layout = {
-  //   title: "<b>Bubble Chart</b>",
-  //   margin: {t:0},
-  //   xaxis: {title:"OTU"},
-  //   margin: {title: "OTU Id"},
-  //   hovermode: "closest"
-  // };
-
-  // Plotly.newPlot("bubble",bubbleData,layout);
-
-  // var gauge = data.metadata.filter(data =>data.id == sample);
-  // var gaugeResults = gauge[0];
-  // var wfreqs = gaugeResults.wfreq;
-
-  // var gaugeData = [{
-  //   type: "indicator",
-  //   mode: "gauge+number",
-  //   value: wfreqs,
-  //   title: {text: "<b>Washing Frequency</b>"},
-  //   gauge: {
-  //   axis: {range: [null,10], tickwidth: 1, tickcolor: "darkblue" },
-  //   bar: { color: "black" },
-  //   steps: [
-  //     {range: [0,2], color: "red"},
-  //     {range: [2,4], color: "orange"},
-  //     {range: [4,6], color: "yellow"},
-  //     {range: [6,8], color: "green"},
-  //     {range: [8,10], color: "blue"}
-  //   ],
-  //   dtick: 2
-  //   }
-  // }];
-
-  // var gaugeLayout = { automargin: true
-  // };
-  // Plotly.newPlot("gauge", gaugeData, gaugeLayout)
-  // });
-  })};
+    }
+  })
+};
