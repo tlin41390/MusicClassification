@@ -1,5 +1,23 @@
+body {
+    background-color: blanchedalmond;
+    border: rgb(53, 45, 39);
+
+}
+
 .jumbotron {
     background-image: url("../images/music.jpg");
     background-size: 100% 100%;
-    text-align: center;
+    text-align: left;
+    font-size: medium;
+    text-shadow: black;
 }
+
+.OutlineText {
+    font-style: oblique;
+    font-size: 69px;
+    color: rgb(73, 20, 20);
+    text-shadow: #000000;
+    text-align-last: center;
+  }
+
+

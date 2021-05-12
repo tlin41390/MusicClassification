@@ -80,7 +80,10 @@ function buildModelsCompared() {
     var barData = [{
       x: models,
       y: acc,
-      type: "bar"
+      type: "bar",
+      marker:{
+        color: ['rgba(146,235,56,0.65)', 'rgba(222,45,38,0.95)', 'rgba(86,200,34,0.65)']
+      },
     }]
 
     var barLayout = {
@@ -153,6 +156,9 @@ function buildCharts(sample) {
         title: "<b>Number of Actual Genre Classes<br>For Selected Predicted Genre</b>",
         xaxis: {title: "Number"},
         yaxis: {title: "Actual Genre"},
+        marker:{
+          color: ['rgba(204,204,204,1)', 'rgba(222,45,38,0.8)', 'rgba(204,204,204,1)', 'rgba(204,204,204,1)', 'rgba(204,204,204,1)']
+        },
         updatemenus: [{
           x: 2,
           y: 1.5,
