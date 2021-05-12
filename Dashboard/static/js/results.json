@@ -8,7 +8,7 @@
         "dataset": "features_30_sec.csv",
         "number of samples": 1000,
         "sample type": "Statistical Features",
-        "accuracy": "65%"
+        "accuracy": 0.65
     },
     {
         "id": 1,
@@ -17,7 +17,7 @@
         "dataset": "features_3_sec.csv",
         "Number of Samples": 9990,
         "sample type": "Statistical Features",
-        "accuracy": "90%"
+        "accuracy": 0.90
     },
     {
         "id": 2,
@@ -42,7 +42,7 @@
         "dataset": "images_orignal",
         "Number of Samples": 999,
         "sample type": "Mel Spectrogram Images",
-        "accuracy": "24%"
+        "accuracy": 0.24
     }],
     "results": [
     {

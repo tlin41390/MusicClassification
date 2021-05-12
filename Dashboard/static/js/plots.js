@@ -17,6 +17,7 @@ function init() {
     var firstModel = musicClassifier[0];
     buildCharts(firstModel);
     buildMetadata(firstModel);
+    buildModelsCompared();
   });
 }
 
@@ -28,10 +29,14 @@ init();
 
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
-  var sel_val = sel.options[sel.selectedIndex].value;
   buildMetadata(newSample);
   buildCharts(newSample);
-  
+  if (newSample == 2 || newSample == 3) {
+    Plotly.purge("models_compared")
+  }
+  else {
+    buildModelsCompared();
+  }
 }
 
 // Model Info Panel 
@@ -59,6 +64,35 @@ function buildMetadata(sample) {
   });
 }
 
+function buildModelsCompared() {
+  d3.json("static/js/results.json").then((data) => {
+    // Get supervised model names and accuracy scores
+    var rf_30 = "RF " + data.metadata[0].dataset;
+    var rf_30_acc = data.metadata[0].accuracy;
+    var rf_3 = "RF " + data.metadata[1].dataset;
+    var rf_3_acc = data.metadata[1].accuracy;
+    var nn = data.metadata[4].model;
+    var nn_acc = data.metadata[4].accuracy;
+    var models = [rf_30, rf_3, nn];
+    var acc = [rf_30_acc, rf_3_acc, nn_acc];
+    
+    // Plot the result
+    var barData = [{
+      x: models,
+      y: acc,
+      type: "bar"
+    }]
+
+    var barLayout = {
+      title: "<b>Supervised Model Precision vs. Model</b>",
+      xaxis: {title: "Model"},
+      yaxis: {title: "Total Accuracy"}
+    }
+
+    Plotly.newPlot("models_compared", barData, barLayout);
+  })
+}
+
 // Create the buildCharts function.
 function buildCharts(sample) {
   // Use d3.json to load and retrieve the samples.json file 
@@ -66,7 +100,6 @@ function buildCharts(sample) {
     var sampleArray = data.results;
     // Create a variable that filters the samples for the object with the desired sample number.
     var filter = sampleArray.filter(sampleObj => sampleObj.id == sample);
-    console.log(sample);
     // Create a variable that holds the first sample in the array.
     var getFirst = filter[0];
     // Create a variable that holds the samples array.
@@ -74,8 +107,8 @@ function buildCharts(sample) {
       // Create variable that holds the precision.
       var prec = getFirst.precision;
 
-      xValue = Object.values(prec)
-      yticks = Object.keys(prec);
+      var xValue = Object.values(prec)
+      var yticks = Object.keys(prec);
 
       // Create the trace for the bar chart. 
       var barData = [{
@@ -98,7 +131,7 @@ function buildCharts(sample) {
   
     // Handle the KMeans models:
     if (sample == 2 || sample == 3) {
-      plots = [];
+      var plots = [];
       for (const [key, value] of Object.entries(getFirst)) {
         if (key != "id") {
           xValue = Object.values(value);
