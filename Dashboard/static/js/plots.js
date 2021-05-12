@@ -18,6 +18,7 @@ function init() {
     buildCharts(firstModel);
     buildMetadata(firstModel);
     buildModelsCompared();
+    buildImage(firstModel);
   });
 }
 
@@ -93,6 +94,20 @@ function buildModelsCompared() {
   })
 }
 
+//create function to build image
+function buildImage(sample){
+  d3.json("static/js/results.json").then((data)=>{
+    var imageArray = data.images;
+    var filter = imageArray.filter(sampleObj => sampleObj.id ==sample);
+    var getFirst = filter[0];
+
+    var img = document.createElement("img");
+    img.src = getFirst.bannerImg1;
+    var src = document.getElementById("img-container");
+    src.appendChild(img);
+    src.src = getFirst.bannerImg1;
+    })
+  }
 // Create the buildCharts function.
 function buildCharts(sample) {
   // Use d3.json to load and retrieve the samples.json file 
