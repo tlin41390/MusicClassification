@@ -15,7 +15,7 @@ function init() {
 
     // Use the first sample from the list to build the initial plots
     var firstModel = musicClassifier[0];
-    buildCharts(firstModel, 0);
+    buildCharts(firstModel);
     buildMetadata(firstModel);
   });
 }
@@ -30,11 +30,11 @@ function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
   var sel_val = sel.options[sel.selectedIndex].value;
   buildMetadata(newSample);
-  buildCharts(newSample, sel_val);
+  buildCharts(newSample);
   
 }
 
-// Demographics Panel 
+// Model Info Panel 
 function buildMetadata(sample) {
   d3.json("static/js/results.json").then((data) => {
     var metadata = data.metadata;
@@ -60,16 +60,17 @@ function buildMetadata(sample) {
 }
 
 // Create the buildCharts function.
-function buildCharts(sample, sel_val) {
+function buildCharts(sample) {
   // Use d3.json to load and retrieve the samples.json file 
   d3.json("static/js/results.json").then((data) => {
     var sampleArray = data.results;
     // Create a variable that filters the samples for the object with the desired sample number.
     var filter = sampleArray.filter(sampleObj => sampleObj.id == sample);
+    console.log(sample);
     // Create a variable that holds the first sample in the array.
     var getFirst = filter[0];
     // Create a variable that holds the samples array.
-    if (sel_val == 0 || sel_val == 1 || sel_val == 4) {
+    if (sample == 0 || sample == 1 || sample == 4) {
       // Create variable that holds the precision.
       var prec = getFirst.precision;
 
@@ -96,7 +97,7 @@ function buildCharts(sample, sel_val) {
     }
   
     // Handle the KMeans models:
-    if (sel_val == 2 || sel_val == 3) {
+    if (sample == 2 || sample == 3) {
       plots = [];
       for (const [key, value] of Object.entries(getFirst)) {
         if (key != "id") {
