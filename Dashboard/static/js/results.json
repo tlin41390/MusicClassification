@@ -2,31 +2,46 @@
     "ids": ["0","1","2","3","4"],
     "metadata":[
     {
-        "id": 0, 
+        "id": 0,
+        "classification technique": "Supervised Machine Learning",
         "model": "Random Forest Classifier",
         "dataset": "features_30_sec.csv",
+        "number of samples": 1000,
+        "sample type": "Statistical Features",
         "accuracy": "65%"
     },
     {
         "id": 1,
+        "classification technique": "Supervised Machine Learning",
         "model": "Random Forest Classifier",
         "dataset": "features_3_sec.csv",
+        "Number of Samples": 9990,
+        "sample type": "Statistical Features",
         "accuracy": "90%"
     },
     {
         "id": 2,
+        "classification technique": "Unsupervised Machine Learning",
         "model": "K-Means",
-        "dataset": "features_30_sec.csv"
+        "dataset": "features_30_sec.csv",
+        "sample type": "Statistical Features",
+        "Number of Samples": 1000
     },
     {
         "id": 3,
+        "classification technique": "Unsupervised Machine Learning",
         "model": "K-Means",
-        "dataset": "features_3_sec.csv"
+        "dataset": "features_3_sec.csv",
+        "sample type": "Statistical Features",
+        "Number of Samples": 9990
     },
     {
         "id": 4,
+        "classification technique": "Supervised Deep Neural Network",
         "model": "Neural Network",
         "dataset": "images_orignal",
+        "Number of Samples": 999,
+        "sample type": "Mel Spectrogram Images",
         "accuracy": "24%"
     }],
     "results": [
