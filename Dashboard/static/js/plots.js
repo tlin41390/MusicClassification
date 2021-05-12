@@ -15,8 +15,9 @@ function init() {
 
     // Use the first sample from the list to build the initial plots
     var firstModel = musicClassifier[0];
-    buildCharts(firstModel, 0);
+    buildCharts(firstModel);
     buildMetadata(firstModel);
+    buildModelsCompared();
   });
 }
 
@@ -28,13 +29,17 @@ init();
 
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
-  var sel_val = sel.options[sel.selectedIndex].value;
   buildMetadata(newSample);
-  buildCharts(newSample, sel_val);
-  
+  buildCharts(newSample);
+  if (newSample == 2 || newSample == 3) {
+    Plotly.purge("models_compared")
+  }
+  else {
+    buildModelsCompared();
+  }
 }
 
-// Demographics Panel 
+// Model Info Panel 
 function buildMetadata(sample) {
   d3.json("static/js/results.json").then((data) => {
     var metadata = data.metadata;
@@ -59,8 +64,37 @@ function buildMetadata(sample) {
   });
 }
 
+function buildModelsCompared() {
+  d3.json("static/js/results.json").then((data) => {
+    // Get supervised model names and accuracy scores
+    var rf_30 = "RF " + data.metadata[0].dataset;
+    var rf_30_acc = data.metadata[0].accuracy;
+    var rf_3 = "RF " + data.metadata[1].dataset;
+    var rf_3_acc = data.metadata[1].accuracy;
+    var nn = data.metadata[4].model;
+    var nn_acc = data.metadata[4].accuracy;
+    var models = [rf_30, rf_3, nn];
+    var acc = [rf_30_acc, rf_3_acc, nn_acc];
+    
+    // Plot the result
+    var barData = [{
+      x: models,
+      y: acc,
+      type: "bar"
+    }]
+
+    var barLayout = {
+      title: "<b>Supervised Model Precision vs. Model</b>",
+      xaxis: {title: "Model"},
+      yaxis: {title: "Total Accuracy"}
+    }
+
+    Plotly.newPlot("models_compared", barData, barLayout);
+  })
+}
+
 // Create the buildCharts function.
-function buildCharts(sample, sel_val) {
+function buildCharts(sample) {
   // Use d3.json to load and retrieve the samples.json file 
   d3.json("static/js/results.json").then((data) => {
     var sampleArray = data.results;
@@ -69,12 +103,12 @@ function buildCharts(sample, sel_val) {
     // Create a variable that holds the first sample in the array.
     var getFirst = filter[0];
     // Create a variable that holds the samples array.
-    if (sel_val == 0 || sel_val == 1 || sel_val == 4) {
+    if (sample == 0 || sample == 1 || sample == 4) {
       // Create variable that holds the precision.
       var prec = getFirst.precision;
 
-      xValue = Object.values(prec)
-      yticks = Object.keys(prec);
+      var xValue = Object.values(prec)
+      var yticks = Object.keys(prec);
 
       // Create the trace for the bar chart. 
       var barData = [{
@@ -96,8 +130,8 @@ function buildCharts(sample, sel_val) {
     }
   
     // Handle the KMeans models:
-    if (sel_val == 2 || sel_val == 3) {
-      plots = [];
+    if (sample == 2 || sample == 3) {
+      var plots = [];
       for (const [key, value] of Object.entries(getFirst)) {
         if (key != "id") {
           xValue = Object.values(value);
