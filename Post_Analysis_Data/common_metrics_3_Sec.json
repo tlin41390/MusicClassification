@@ -1,15 +1,15 @@
 {
     "precision": {
-        "macro avg": 0.9004089441,
-        "weighted avg": 0.900967754
+        "macro avg": 0.9017064291,
+        "weighted avg": 0.9022357102
     },
     "recall": {
-        "macro avg": 0.9000892677,
-        "weighted avg": 0.8999199359
+        "macro avg": 0.9011139609,
+        "weighted avg": 0.9011208967
     },
     "f1-score": {
-        "macro avg": 0.8995551949,
-        "weighted avg": 0.8997674083
+        "macro avg": 0.9006352803,
+        "weighted avg": 0.9009222031
     },
     "support": {
         "macro avg": 2498.0,
