@@ -446,24 +446,23 @@
     }],
     "images": [{
         "id":0,
-        "bannerImg1":"static/Images/features_30_sec_Heatmap.png"
+        "refs":"static/Images/features_30_sec_Heatmap.png"
     },
     {
         "id":1,
-        "bannerImg1":"static/Images/features_3_sec_Heatmap.png"
+        "refs":"static/Images/features_3_sec_Heatmap.png"
     },
     {
         "id":2,
-        "bannerImg1":"static/Images/features_30_sec_3dscatter.png"
+        "refs":"static/Images/features_30_sec_3dscatter.png"
     },
     {
         "id":3,
-        "bannerImg1":"static/Images/features_3_sec_3dscatter.png"
+        "refs":"static/Images/features_3_sec_3dscatter.png"
     },
     {
         "id":4,
-        "bannerImg1":"static/Images/metal00003.png"
+        "refs":"static/Images/metal00003.png"
     }
 ]
-    
 }

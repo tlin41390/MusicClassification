@@ -102,7 +102,7 @@ function buildImage(sample){
     var filter = imageArray.filter(sampleObj => sampleObj.id ==sample);
     var getFirst = filter[0];
     var img = document.createElement("img");
-    img.src = getFirst.bannerImg1;
+    img.src = getFirst.refs;
     var src = document.getElementById("img-container");
     src.appendChild(img);
     })
@@ -114,7 +114,7 @@ function replaceImage(sample){
     var filter = imageArray.filter(sampleObj => sampleObj.id==sample);
     var getFirst =filter[0];
     var replace = document.getElementsByTagName("img");
-    replace[0].src = getFirst.bannerImg1;
+    replace[0].src = getFirst.refs;
   })
 }
 // Create the buildCharts function.
