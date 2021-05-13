@@ -28,46 +28,45 @@ features using machine learning, the second method classifying genres based on
 the Mel Spectrogram image files, and the third method classifiying genres from
 the raw `.wav` audio files.
 
-## Communication Protocols
-- Always commit work to personal branch.
-- Once personal branch is ready for merging with main, create pull request,
-and choose at least one person to review.
-
 ## Database Usage
 ### Mongo Interface
 To launch and load data into a MongoDB database, use the following steps
 (MacOS):
 
-1) Install MongoDB using Homebrew by following the appropriate section of its
+1) Install MongoDB:
+MacOS:
+Install using Homebrew by following the appropriate section of its
 [installation instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)
 
-2) Check successful installation:
+Check successful installation:
 ```
 $ brew services list
 Name              Status  User Plist
 mongodb-community stopped
 ```
 
-3) Start `mongdb-community` service:
+Start `mongdb-community` service:
 ```
 $ brew services start mongodb-community
 ==> Successfully started `mongodb-community` (label: homebrew.mxcl.mongodb-community)
 ```
+Windows:
+Follow the [MongoDB Official Documentation](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
 
-4) Launch MongoDB shell:
+2) Launch MongoDB shell:
 ```
 $ mongo
 ```
 
-5) Create new MongoDB database using the mongo shell:
+3) Create new MongoDB database using the mongo shell:
 ```
 > use Music_db
 ```
 
-6) Exit the mongo shell using `<CTRL+D>`.
+4) Exit the mongo shell using `<CTRL+D>`.
 
 #### Automatic Data Loading
-7) Automatic population of the database `Music_db` created in steps 1-4 is
+5) Automatic population of the database `Music_db` created in steps 1-4 is
 accomplished by opening and running all cells in the Jupyter Notebook
 `Load_Data.ipynb`.
 
@@ -87,7 +86,7 @@ field of each document in the GridFS `fs.files` collection to the specified
 from the root of this repository since this relative path is used to extract
 the data from MongoDB in `Music_Classification.ipynb`.
 
-8) Check image and wave file storage from the command line:
+6) Check image and wave file storage from the command line:
 ```
 $ mongofiles -d=Music_db list
 2021-04-17T12:22:58.153-0700	connected to: mongodb://localhost/
@@ -101,7 +100,7 @@ Data/images_original/blues/blues00002.png	80395
 ...
 ```
 
-9) Check all data storage within the mongo shell:
+7) Check all data storage within the mongo shell:
 ```
 $ mongo
 > use Music_db
@@ -118,7 +117,8 @@ fs.files
 ```
 ### Python Interface
 1) Read in the CSV data into a jupyter notebook from the MongoDB database using
-`pymongo.MongoClient`, then instantiate the database:
+`pymongo.MongoClient`, then instantiate the database and load the data into a
+pandas DataFrame:
 ```
 from pymongo import MongoClient
 from config import DB_NAME, FEAT_3_COLLECTION_NAME
@@ -126,10 +126,9 @@ client = MongoClient("localhost")
 db = client[DB_NAME]
 collection = db[FEAT_3_COLLECTION_NAME].find()
 features_3_df = pd.DataFrame(list(collection))
-features_3_df = features_3_df.drop(columns = ["_id"])
 ```
 
-2) Create a GridFS file instance and get load the image files:
+2) Create a GridFS file instance to load the image files:
 ```
 import gridfs
 cwd_bytes = subprocess.check_output("pwd")
@@ -188,7 +187,7 @@ results:
 - `sklearn.tree.DecisionTreeClassifier()`: 63% accuracy
 - `sklearn.neighbors.KNeigborsClassifier(n_neighbors=21)`: 28% accuracy
 - `sklearn.naive_bayes.GaussianNB()`: 43% accuracy
-- `sklearn.ensemble.RandomForestClassifier()`: 88% accuracy
+- `sklearn.ensemble.RandomForestClassifier()`: 90% accuracy
 
 ## Neural Network Model
 We next define a deep layer neural network to classify music genres from the
@@ -213,8 +212,8 @@ each
 - `accuracy` metric
 
 Results:
-- Testing Loss: 1.8947
-- Testing Accuracy: 29%
+- Testing Loss: 2.38
+- Testing Accuracy: 24%
 
 ## Google Slides Presentation
 https://docs.google.com/presentation/d/1mtLgLnwL2p8m_hOIKtAYMIkNlP1axNtIMz0xgWbGiqM/edit?usp=sharing
