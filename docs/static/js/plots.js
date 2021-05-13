@@ -159,8 +159,13 @@ function buildCharts(sample) {
     // Handle the KMeans models:
     if (sample == 2 || sample == 3) {
       var plots = [];
+      var cnt = 0;
+      var is_visible = true;
       for (const [key, value] of Object.entries(getFirst)) {
         if (key != "id") {
+          if (cnt > 0) {
+            is_visible = false;
+          }
           xValue = Object.values(value);
           yticks = Object.keys(value);
           barData = {
@@ -168,10 +173,11 @@ function buildCharts(sample) {
             y: yticks,
             type: "bar",
             orientation: "h",
-            visible: false,
+            visible: is_visible,
             name: "Predicted " + key
           }
           plots.push(barData);
+          cnt = cnt + 1;
         }
       };
 
