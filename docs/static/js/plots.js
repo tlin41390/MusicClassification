@@ -161,16 +161,24 @@ function buildCharts(sample) {
     // Handle the KMeans models:
     if (sample == 2 || sample == 3) {
       var plots = [];
+      var buttons = [];
       var cnt = 0;
       var is_visible = true;
+      var labels = ["Predicted jazz", "Predicted metal", "Predicted disco", "Predicted pop", "Predicted reggae", "Predicted classical", "Predicted rock", "Predicted blues", "Predicted hiphop", "Predicted country"]
+      // Iterate through KMeans data
+      // key = Predicted class
+      // value = JSON files with keys = actual genres / values = number of samples of each
       for (const [key, value] of Object.entries(getFirst)) {
+        // skip first "id" key
         if (key != "id") {
+          // Only want the first predicted category to be visible initially
           if (cnt > 0) {
             is_visible = false;
           }
-          xValue = Object.values(value);
-          yticks = Object.keys(value);
-          barData = {
+          // Create bar chart for current predicted class
+          let xValue = Object.values(value);
+          let yticks = Object.keys(value);
+          let barData = {
             x: xValue,
             y: yticks,
             type: "bar",
@@ -178,12 +186,22 @@ function buildCharts(sample) {
             visible: is_visible,
             name: "Predicted " + key
           }
+
+          // Create dropdown button
+          let display = [false, false, false, false, false, false, false, false, false, false];
+          display[cnt] = true;
+          let button = {
+            method: "restyle",
+            args: ["visible", display],
+            label: labels[cnt]
+          }
+          buttons.push(button);
           plots.push(barData);
           cnt = cnt + 1;
         }
       };
 
-
+      // Build the plot with the dropdown buttons
       Plotly.newPlot('bar', plots, {
         title: "<b>Number of Actual Genre Classes<br>For Selected Predicted Genre</b>",
         xaxis: {title: "Number"},
@@ -191,47 +209,7 @@ function buildCharts(sample) {
         updatemenus: [{
           x: 2,
           y: 1.5,
-          buttons: [{
-            method: 'restyle',
-            args: ['visible', [true, false, false, false, false, false, false, false, false, false]],
-            label: 'Predicted jazz'
-          }, {
-            method: 'restyle',
-            args: ['visible', [false, true, false, false, false, false, false, false, false, false]],
-            label: 'Predicted metal'
-          }, {
-            method: 'restyle',
-            args: ['visible', [false, false, true, false, false, false, false, false, false, false]],
-            label: 'Predicted disco'
-          }, {
-            method: 'restyle',
-            args: ['visible', [false, false, false, true, false, false, false, false, false, false]],
-            label: 'Predicted pop'
-          }, {
-            method: 'restyle',
-            args: ['visible', [false, false, false, false, true, false, false, false, false, false]],
-            label: 'Predicted reggae'
-          }, {
-            method: 'restyle',
-            args: ['visible', [false, false, false, false, false, true, false, false, false, false]],
-            label: 'Predicted classical'
-          }, {
-            method: 'restyle',
-            args: ['visible', [false, false, false, false, false, false, true, false, false, false]],
-            label: 'Predicted rock'
-          }, {
-            method: 'restyle',
-            args: ['visible', [false, false, false, false, false, false, false, true, false, false]],
-            label: 'Predicted blues'
-          }, {
-            method: 'restyle',
-            args: ['visible', [false, false, false, false, false, false, false, false, true, false]],
-            label: 'Predicted hiphop'
-          }, {
-            method: 'restyle',
-            args: ['visible', [false, false, false, false, false, false, false, false, false, true]],
-            label: 'Predicted country'
-          }]
+          buttons: buttons
         }],
       });
     }
