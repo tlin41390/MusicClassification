@@ -77,7 +77,7 @@ function buildModelsCompared() {
     var nn_acc = data.metadata[4].accuracy;
     var models = [rf_30, rf_3, nn];
     var acc = [rf_30_acc, rf_3_acc, nn_acc];
-    
+
     // Plot the result
     var barData = [{
       x: models,
@@ -120,12 +120,14 @@ function replaceImage(sample){
     replace[0].src = getFirst.refs;
   })
 }
+
 // Create the buildCharts function.
 function buildCharts(sample) {
   // Use d3.json to load and retrieve the samples.json file 
   d3.json("static/js/results.json").then((data) => {
     var sampleArray = data.results;
-    // Create a variable that filters the samples for the object with the desired sample number.
+    // Create a variable that filters the samples for the object with the 
+    // desired sample number.
     var filter = sampleArray.filter(sampleObj => sampleObj.id == sample);
     // Create a variable that holds the first sample in the array.
     var getFirst = filter[0];
@@ -155,7 +157,7 @@ function buildCharts(sample) {
       // Use Plotly to plot the data with the layout. 
       Plotly.newPlot("bar", barData, barLayout);
     }
-  
+
     // Handle the KMeans models:
     if (sample == 2 || sample == 3) {
       var plots = [];
