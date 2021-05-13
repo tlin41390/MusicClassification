@@ -18,6 +18,7 @@ function init() {
     buildCharts(firstModel);
     buildMetadata(firstModel);
     buildModelsCompared();
+    buildImage(firstModel);
   });
 }
 
@@ -31,6 +32,7 @@ function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
   buildMetadata(newSample);
   buildCharts(newSample);
+  replaceImage(newSample);
   if (newSample == 2 || newSample == 3) {
     Plotly.purge("models_compared")
   }
@@ -96,6 +98,28 @@ function buildModelsCompared() {
   })
 }
 
+//create function to build image
+function buildImage(sample){
+  d3.json("static/js/results.json").then((data)=>{
+    var imageArray = data.images;
+    var filter = imageArray.filter(sampleObj => sampleObj.id ==sample);
+    var getFirst = filter[0];
+    var img = document.createElement("img");
+    img.src = getFirst.refs;
+    var src = document.getElementById("img-container");
+    src.appendChild(img);
+    })
+  }
+
+function replaceImage(sample){
+  d3.json("static/js/results.json").then((data)=>{
+    var imageArray = data.images;
+    var filter = imageArray.filter(sampleObj => sampleObj.id==sample);
+    var getFirst =filter[0];
+    var replace = document.getElementsByTagName("img");
+    replace[0].src = getFirst.refs;
+  })
+}
 // Create the buildCharts function.
 function buildCharts(sample) {
   // Use d3.json to load and retrieve the samples.json file 
