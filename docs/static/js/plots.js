@@ -34,14 +34,14 @@ function optionChanged(newSample) {
   buildCharts(newSample);
   replaceImage(newSample);
   if (newSample == 2 || newSample == 3) {
-    Plotly.purge("models_compared")
+    Plotly.purge("models_compared");
   }
   else {
     buildModelsCompared();
   }
 }
 
-// Model Info Panel 
+// Model Info Panel
 function buildMetadata(sample) {
   d3.json("static/js/results.json").then((data) => {
     var metadata = data.metadata;
@@ -62,7 +62,6 @@ function buildMetadata(sample) {
     Object.entries(result).forEach(([key, value]) => {
       PANEL.append("h6").text(`${key.toUpperCase()}: ${value}`);
     });
-
   });
 }
 
@@ -83,24 +82,24 @@ function buildModelsCompared() {
       x: models,
       y: acc,
       type: "bar",
-      marker:{
+      marker: {
         color: ['rgba(146,235,56,0.65)', 'rgba(222,45,38,0.95)', 'rgba(86,200,34,0.65)']
-      },
-    }]
+      }
+    }];
 
     var barLayout = {
       title: "<b>Supervised Model Precision vs. Model</b>",
       xaxis: {title: "Model"},
       yaxis: {title: "Total Accuracy"}
-    }
+    };
 
     Plotly.newPlot("models_compared", barData, barLayout);
-  })
+  });
 }
 
-//create function to build image
-function buildImage(sample){
-  d3.json("static/js/results.json").then((data)=>{
+// Create function to build image
+function buildImage(sample) {
+  d3.json("static/js/results.json").then((data) => {
     var imageArray = data.images;
     var filter = imageArray.filter(sampleObj => sampleObj.id ==sample);
     var getFirst = filter[0];
@@ -108,25 +107,25 @@ function buildImage(sample){
     img.src = getFirst.refs;
     var src = document.getElementById("img-container");
     src.appendChild(img);
-    })
-  }
+  });
+}
 
-function replaceImage(sample){
-  d3.json("static/js/results.json").then((data)=>{
+function replaceImage(sample) {
+  d3.json("static/js/results.json").then((data) => {
     var imageArray = data.images;
     var filter = imageArray.filter(sampleObj => sampleObj.id==sample);
     var getFirst =filter[0];
     var replace = document.getElementsByTagName("img");
     replace[0].src = getFirst.refs;
-  })
+  });
 }
 
 // Create the buildCharts function.
 function buildCharts(sample) {
-  // Use d3.json to load and retrieve the samples.json file 
+  // Use d3.json to load and retrieve the samples.json file
   d3.json("static/js/results.json").then((data) => {
     var sampleArray = data.results;
-    // Create a variable that filters the samples for the object with the 
+    // Create a variable that filters the samples for the object with the
     // desired sample number.
     var filter = sampleArray.filter(sampleObj => sampleObj.id == sample);
     // Create a variable that holds the first sample in the array.
@@ -136,25 +135,25 @@ function buildCharts(sample) {
       // Create variable that holds the precision.
       var prec = getFirst.precision;
 
-      var xValue = Object.values(prec)
+      var xValue = Object.values(prec);
       var yticks = Object.keys(prec);
 
-      // Create the trace for the bar chart. 
+      // Create the trace for the bar chart.
       var barData = [{
         x: xValue,
         y: yticks,
         type: "bar",
-        orientation: "h",
+        orientation: "h"
       }];
 
-      // Create the layout for the bar chart. 
+      // Create the layout for the bar chart.
       var barLayout = {
         title: "<b>Precision vs. Genre</b>",
         xaxis: {title: "Precision"},
         yaxis: {title: "Genre"}
       };
 
-      // Use Plotly to plot the data with the layout. 
+      // Use Plotly to plot the data with the layout.
       Plotly.newPlot("bar", barData, barLayout);
     }
 
@@ -164,7 +163,9 @@ function buildCharts(sample) {
       var buttons = [];
       var cnt = 0;
       var is_visible = true;
-      var labels = ["Predicted jazz", "Predicted metal", "Predicted disco", "Predicted pop", "Predicted reggae", "Predicted classical", "Predicted rock", "Predicted blues", "Predicted hiphop", "Predicted country"]
+      var labels = ["Predicted jazz", "Predicted metal", "Predicted disco", "Predicted pop",
+                    "Predicted reggae", "Predicted classical", "Predicted rock",
+                    "Predicted blues", "Predicted hiphop", "Predicted country"];
       // Iterate through KMeans data
       // key = Predicted class
       // value = JSON files with keys = actual genres / values = number of samples of each
@@ -185,7 +186,7 @@ function buildCharts(sample) {
             orientation: "h",
             visible: is_visible,
             name: "Predicted " + key
-          }
+          };
 
           // Create dropdown button
           let display = [false, false, false, false, false, false, false, false, false, false];
@@ -194,12 +195,12 @@ function buildCharts(sample) {
             method: "restyle",
             args: ["visible", display],
             label: labels[cnt]
-          }
+          };
           buttons.push(button);
           plots.push(barData);
           cnt = cnt + 1;
         }
-      };
+      }
 
       // Build the plot with the dropdown buttons
       Plotly.newPlot('bar', plots, {
@@ -213,5 +214,5 @@ function buildCharts(sample) {
         }],
       });
     }
-  })
-};
+  });
+}
