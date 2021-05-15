@@ -101,7 +101,7 @@ $ mongo
 3) Exit the mongo shell using `<CTRL+D>`.
 
 4) Populate the database `Music_db` by running all cells in the Jupyter
-Notebook `Load_Data.ipynb`.
+Notebook [`Load_Data.ipynb`](Load_Data.ipynb).
 
 ### Optional Manual Data Loading
 Alternatively, one can manually load data into `Music_db`. For `.csv` data:
@@ -151,8 +151,7 @@ fs.files
 ## Python Database Interface
 Loading our data for analysis from `Music_db` is accomplished in
 [`MusicClassification.ipynb`](MusicClassification.ipynb) using `pymongo` by
-first instantiating a client and reading the `.csv` data into a pandas
-DataFrame:
+instantiating a client and reading the `.csv` data into a pandas DataFrame:
 ```
 client = MongoClient("localhost")
 db = client[DB_NAME]
