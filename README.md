@@ -53,45 +53,25 @@ $ pip install -r requirements.txt
 ```
 
 ## Database Installation and Usage (MongoDB)
-To launch and load data into a MongoDB database, use the following steps:
+First install MongoDB by following the
+[official documentation](https://docs.mongodb.com/manual/administration/install-community/).
+After successful installation, use the following steps to create and populate
+the database that will be used for this analysis:
 
-1) Install MongoDB:
-MacOS:
-a Install using Homebrew by following the appropriate section of its
-[installation instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)
-
-b) Check successful installation:
-```
-$ brew services list
-Name              Status  User Plist
-mongodb-community stopped
-```
-
-c) Start `mongdb-community` service:
-```
-$ brew services start mongodb-community
-==> Successfully started `mongodb-community` (label: homebrew.mxcl.mongodb-community)
-```
-Windows:
-a) Install by following the
-[MongoDB Official Documentation](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
-
-2) Launch the MongoDB shell:
+1) Launch the MongoDB shell:
 ```
 $ mongo
 ```
 
-3) Create new MongoDB database using the mongo shell:
+2) Create new MongoDB database using the mongo shell:
 ```
 > use Music_db
 ```
 
-4) Exit the mongo shell using `<CTRL+D>`.
+3) Exit the mongo shell using `<CTRL+D>`.
 
-### Automatic Data Loading
-5) Automatic population of the database `Music_db` created in steps 1-4 is
-accomplished by opening and running all cells in the Jupyter Notebook
-`Load_Data.ipynb`.
+4) Populate the database `Music_db` created in steps 1-3 by running all cells
+in the Jupyter Notebook `Load_Data.ipynb`.
 
 ### Optional Manual Data Loading
 Alternatively, one can manually load data into `Music_db` as follows: For CSV Data:
@@ -109,7 +89,7 @@ field of each document in the GridFS `fs.files` collection to the specified
 from the root of this repository since this relative path is read and used to
 extract the data from MongoDB in `Music_Classification.ipynb`.
 
-6) Check image and wave file storage from the command line:
+5) Check image and wave file storage from the command line:
 ```
 $ mongofiles -d=Music_db list
 2021-04-17T12:22:58.153-0700	connected to: mongodb://localhost/
@@ -123,7 +103,7 @@ Data/images_original/blues/blues00002.png	80395
 ...
 ```
 
-7) Check all data storage within the mongo shell:
+6) Check all data storage within the mongo shell:
 ```
 $ mongo
 > use Music_db
@@ -145,9 +125,6 @@ first instatiating a client and reading the `.csv` data into a pandas
 DataFrame as follows:
 
 ```
-import pandas as pd
-from pymongo import MongoClient
-from config import DB_NAME, FEAT_3_COLLECTION_NAME
 client = MongoClient("localhost")
 db = client[DB_NAME]
 collection = db[FEAT_3_COLLECTION_NAME].find()
@@ -158,24 +135,14 @@ We then create a `GridFS` instance to load the image files using the relative
 path from the working directory as the `filename` identifier for the function
 `GridFS.get_last_version` and convert each each from RGBA to grayscale:
 ```
-import gridfs
-import subprocess
-from PIL import Image, ImageOps
-import numpy as np
-
 fs = gridfs.GridFS(db)
 
 images = []
 
 for folder in images_folder:
-    # Get files in each image folder
-    byte_files = subprocess.check_output(["ls", cwd + images_path + folder])
-    files = byte_files.decode("utf-8").split("\n")
-    files.pop(-1)
-    
     for file in files:
         # Load image using its relative path as its GridFS identifier
-        file_path = images_path + folder + "/" + file  # images_path initialized
+        file_path = images_path + folder + "/" + file
         image_raw = fs.get_last_version(file_path)
         image_bytes = image_raw.read()
         rgba_image = Image.open(io.BytesIO(image_bytes))
