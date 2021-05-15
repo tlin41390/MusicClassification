@@ -1,5 +1,5 @@
 # Technologies Used
-# General Dependencies
+## General Dependencies
 - Python 3.7.6
 - HTML
 - JavaScript
@@ -12,11 +12,11 @@
 - PyMongo 3.11.2
 - GridFS
 
-# Model Dependencies
+## Model Dependencies
 - scikit-learn 0.22.1
 - TensorFlow 2.4.1
 
-# Visualization Dependencies
+## Visualization Dependencies
 - Matplotlib 3.1.3
 - Seaborn 0.10.0
 - Plotly 4.14.3
