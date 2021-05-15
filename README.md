@@ -11,7 +11,7 @@ features and Mel Spectrogram images.
 ## Description of data
 The data originates from the
 [GTZAN Genre collection](http://marsyas.info/downloads/datasets.html) and
-contains 1000 songs from the 10 genres blues, classical, country, disco, hiphop,
+contains 1000 songs from 10 genres including blues, classical, country, disco, hiphop,
 jazz, metal, pop, reggae, and rock:
 - 1000 `.wav` [audio files](Data/genres_original)
     - One per song, 30 seconds each
@@ -34,7 +34,7 @@ We will compare the following methods for classifying music:
 - Image classification model trained on Mel Spectrogram images using a deep
 neural network
 
-## High Level Visualizations
+## High Level Visualization
 [Interactive Dashboard](https://jsheppard95.github.io/MusicClassification/)
 
 ## Installation Instructions
@@ -122,7 +122,7 @@ fs.files
 ## Python Database Interface
 Loading our data for analysis from `Music_db` is accomplished in
 [`MusicClassification.ipynb`](MusicClassification.ipynb) using `pymongo` by
-first instatiating a client and reading the `.csv` data into a pandas
+first instantiating a client and reading the `.csv` data into a pandas
 DataFrame:
 
 ```
@@ -163,9 +163,9 @@ three and 30 second `.csv` data, then build a deep neural network using
 Spectrogram images, and finally compare the performance of the five models.
 
 ### Data Preprocessing:
-- All Machine Learning Models:
-    - Drop unnecessary columns `_id`, `filename`, and `length` (identification and
-    rendundant for all samples)
+- All Models:
+    - Drop unnecessary columns `_id`, `filename`, and `length` (machine learning only,
+    identification and rendundant for all samples)
     - Convert categorical genre target labels to integers 0 through 9
 
 - Random Forest Classifier:
@@ -174,7 +174,7 @@ Spectrogram images, and finally compare the performance of the five models.
     `sklearn.model_selection.train_test_split`
 
 - K-Means Cluster:
-    - Shuffle feature data (previously handle by `train_test_split`)
+    - Shuffle feature data (handled for Random Forest Classifier by `train_test_split`)
     - Scale feature data using `sklearn.preprocessing.StandardScaler`
     - Apply principal component analysis to reduce the 57 features to three
     principal components using  `sklearn.decomposition.PCA`
@@ -206,23 +206,23 @@ Spectrogram images, and finally compare the performance of the five models.
     - `n_clusters = 10`, i.e the number of genres to classify
     - `features_3_sec.csv`:
         - [Predicted Genres vs. Principal Components](Images/kmeans_3_scatter.png)
-        - [Plot](Images/kmeans_act_pred_3.png) of number of each actual genre
+        - [Plot](Images/kmeans_act_pred_3.png) of the number of each actual genre
         for the predicted pop genre
         - Mostly random classification
     - `features_30_sec.csv`:
         - [Predicted Genres vs. Principal Components](Images/kmeans_30_scatter.png)
-        - [Plot](Images/kmeans_act_pred_30.png) of number of each actual genre
+        - [Plot](Images/kmeans_act_pred_30.png) of the number of each actual genre
         for the predicted metal genre
         - Mostly random classification
 - Neural Network:
     - Followed [How to train neural networks for image classification - Part 1](https://medium.com/nerd-for-tech/how-to-train-neural-networks-for-image-classification-part-1-21327fe1cc1)
     - [Model Summary](Images/nn_summary.png)
     - Model Parameters:
-        - Input layer with 124416 inputs (image width * image height = 288 * 432)
+        - Input `Flatten` layer with 124416 inputs (image width * image height = 288 * 432)
         - `Dense` hidden layer with 300 nodes and `relu` activation function
         - Three additional `Dense` hidden layers with 100 nodes each and `relu`
         activation functions
-        - Output layer with 10 output nodes and `softmax` activation function
+        - Output `Dense` layer with 10 output nodes and `softmax` activation function
         - `sparse_categorical_crossentropy` loss function
         - `sgd` optimizer
         - `accuracy` metric
@@ -265,13 +265,14 @@ feature data:
         - [Confusion Matrix](Images/rf_30_optimized.png)
         - [Precision vs. Genre](Images/prec_genre_30_sec.png)
         - Accuracy: 66%
+
 We thus find a 2% increase in accuracy training on the three second feature data
 while no change training on the full 30 second features.
 
 ## Dashboard Visualization
 To create an interactive display of the previous visualizations, we write the
 classification results to [JSON files](Post_Analysis_Data/) and concatenate
-them into [`results.json`](docs/static/results.json). This file has the
+them into [`results.json`](docs/static/js/results.json). This file has the
 following structure:
 ```
 {
