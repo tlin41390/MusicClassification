@@ -52,7 +52,7 @@ Install the necessary dependencies using the `requirements.txt` file:
 $ pip install -r requirements.txt
 ```
 
-## Database Usage (MongoDB)
+## Database Installation and Usage (MongoDB)
 To launch and load data into a MongoDB database, use the following steps:
 
 1) Install MongoDB:
@@ -186,7 +186,7 @@ for folder in images_folder:
 images = np.asarray(images)
 ```
 
-## Machine Learning and Neural Network Analysis
+## Model Analysis
 We first classify music genres using machine learning by training a supervised
 Random Forest Classifier model (`sklearn.ensemble.RandomForestClassifier`) and
 an unsupervised K-Means cluster model (`sklearn.cluster.KMeans`) on both the
@@ -195,35 +195,55 @@ three and 30 second `.csv` data, then build a deep neural network using
 Spectrogram images, and finally compare the performance of the five models.
 
 ### Data Preprocessing:
-#### Machine Learning
-All Models:
-- Drop unnecessary columns `_id`, `filename`, and `length` (identification and
-rendundant for all samples)
-- Convert categorical genre target labels to integers 0 through 9
+- All Machine Learning Models:
+    - Drop unnecessary columns `_id`, `filename`, and `length` (identification and
+    rendundant for all samples)
+    - Convert categorical genre target labels to integers 0 through 9
 
-Random Forest Classifier:
-- Separate feature data from target genre (column = `label`)
-- Split data into 75% training and 25% testing using
-`sklearn.model_selection.train_test_split`
+- Random Forest Classifier:
+    - Separate feature data from target genre (column = `label`)
+    - Split data into 75% training and 25% testing using
+    `sklearn.model_selection.train_test_split`
 
-K-Means Cluster:
-- Shuffle feature data
-- Scale feature data using `sklearn.preprocessing.StandardScaler`
-- Apply principal component analysis to reduce the 57 features to three
-principal components using  `sklearn.decomposition.PCA`
+- K-Means Cluster:
+    - Shuffle feature data (previously handle by `train_test_split`)
+    - Scale feature data using `sklearn.preprocessing.StandardScaler`
+    - Apply principal component analysis to reduce the 57 features to three
+    principal components using  `sklearn.decomposition.PCA`
 
-#### Neural Network
-- Split data into 75% training and 25% testing using
-`sklearn.model_selection.train_test_split`
-- Normalize the grayscale pixel values by dividing each by its maximum value
-of 255
+- Neural Network
+    - Convert RGBA images to RGB and then to grayscale and finally NumPy arrays
+    - Split data into 75% training and 25% testing using
+    `sklearn.model_selection.train_test_split`
+    - Normalize the grayscale pixel values by dividing each by its maximum value
+    of 255
 
 ### Training and Initial Results
 - Random Forest Classifier:
-    - `n_estimators = 500`
-    - Otherwise default parameters
-    - Three second song samples (`features_3_sec.csv`)
-    - Accuracy: 88%
+    - `features_3_sec.csv`:
+        - `n_estimators = 500`
+        - Otherwise default parameters
+        - 57 statistical features for three second song samples
+        - [Confusion Matrix](Images/rf_3_initial_results.png)
+        - Accuracy: 88%
+    - `features_30_sec.csv`:
+        - `n_estimators = 500`
+        - Otherwise default parameters
+        - 57 statistical features for 30 second song samples
+        - [Confusion Matrix](Images/rf_30_initial_results.png)
+        - Accuracy: 66%
+- K-Means Cluster:
+    - `n_clusters = 10`, i.e the number of genres to classify
+    - `features_3_sec.csv`:
+        - [Predicted Genres vs. Principal Components](Images/kmeans_3_scatter.png)
+        - [Plot](Images/kmeans_act_pred_3.png) of number of each actual genre
+        for the predicted pop genre
+        - Mostly random classification
+    - `features_30_sec.csv`:
+        - [Predicted Genres vs. Principal Components](Images/kmeans_30_scatter.png)
+        - [Plot](Images/kmeans_act_pred_30.png) of number of each actual genre
+        for the predicted metal genre
+        - Mostly random classification
 
 
 After initial training with minimal hyper-parameter tuning, we obtain the following
