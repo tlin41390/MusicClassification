@@ -230,6 +230,36 @@ Spectrogram images, and finally compare the performance of the five models.
     [72% accuracy](Images/nn_metal_plot.png)
 
 ### Random Forest Classifier Optimization
+Focusing on the highest performing Random Forest Classifier, we optimize the
+model using `sklearn.model_selection.RandomizedSearchCV` to perform a grid
+search over model hyperparameters. This results in the following optimized
+parameters and resulting performances for the three and 30 second
+feature data:
+- `features_3_sec.csv`:
+    - `n_estimators = 1400`
+    - `min_samples_split = 2`
+    - `min_samples_leaf = 1`
+    - `max_features = auto`
+    - `max_depth = 40`
+    - `bootstrap = False`
+    - [Confusion Matrix](Images/rf_3_optimized.png)
+    - [Precision vs. Genre](Images/prec_genre_3_sec.png)
+    - Accuracy: 90%
+- `features_30_sec.csv`:
+    - `n_estimators = 800`
+    - `min_samples_split = 5`
+    - `min_samples_leaf = 1`
+    - `max_features = sqrt`
+    - `max_depth = 90`
+    - `bootstrap = False`
+    - [Confusion Matrix](Images/rf_30_optimized.png)
+    - [Precision vs. Genre](Images/prec_genre_30_sec.png)
+    - Accuracy: 66%
+We thus find a 2% increase accuracy training on the three second feature data
+while no change training on the full 30 second features.
+
+## Dashboard Visualization
+
 
 ## Google Slides Presentation
 https://docs.google.com/presentation/d/1mtLgLnwL2p8m_hOIKtAYMIkNlP1axNtIMz0xgWbGiqM/edit?usp=sharing
