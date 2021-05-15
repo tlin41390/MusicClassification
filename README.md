@@ -34,8 +34,10 @@ We will compare the following methods for classifying music:
 - Image classification model trained on Mel Spectrogram images using a deep
 neural network
 
-## High Level Visualization
-[Interactive Dashboard](https://jsheppard95.github.io/MusicClassification/)
+## Interactive Dashboard
+An interactive dashboard visualizing the results of this analysis can be found
+by navigating to this repository's
+[GitHub Pages](https://jsheppard95.github.io/MusicClassification/)
 
 ## Installation Instructions
 After cloning this repository, navigate to the root directory and install
@@ -165,9 +167,10 @@ images. We then compare the performance of the five models.
 
 ### Data Preprocessing:
 - All Models:
-    - Drop unnecessary columns `_id`, `filename`, and `length` (machine learning only,
-    identification and rendundant for all samples)
-    - Convert categorical genre target labels to integers 0 through 9
+    - Drop unnecessary columns `_id`, `filename`, and `length` (machine
+    learning only, identification and rendundant for all samples)
+    - Convert categorical genre target labels to integers 0 through 9 so that
+    entire data set is numerical
 
 - Random Forest Classifier:
     - Separate feature data from target genre (column = `label`)
@@ -176,12 +179,14 @@ images. We then compare the performance of the five models.
 
 - K-Means Cluster:
     - Shuffle feature data (handled for Random Forest Classifier by `train_test_split`)
-    - Scale feature data using `sklearn.preprocessing.StandardScaler`
+    - Scale feature data using `sklearn.preprocessing.StandardScaler` for PCA
     - Apply principal component analysis to reduce the 57 features to three
-    principal components using  `sklearn.decomposition.PCA`
+    principal components using  `sklearn.decomposition.PCA` for cluster
+    visualization in three dimensions
 
 - Neural Network
-    - Convert RGBA images to RGB and then to grayscale and finally NumPy arrays
+    - Convert RGBA images to RGB and then to grayscale and finally NumPy
+    arrays to reduce input dimensionality
     - Split data into 75% training and 25% testing using
     `sklearn.model_selection.train_test_split`
     - Normalize the grayscale pixel values by dividing each by its maximum value
@@ -240,7 +245,7 @@ images. We then compare the performance of the five models.
 Focusing on the highest performing Random Forest Classifier, we optimize the
 model using `sklearn.model_selection.RandomizedSearchCV` to perform a grid
 search over model hyperparameters. This results in the following optimized
-parameters and resulting performances for the three and 30 second
+parameters and accuracies after retraining for the three and 30 second
 feature data:
 - `features_3_sec.csv`:
     - Model Parameters:
@@ -252,7 +257,10 @@ feature data:
         - `bootstrap = False`
     - Results:
         - [Confusion Matrix](Images/rf_3_optimized.png)
+            - Darker diagonal entries indicate good performance across all
+            genres
         - [Precision vs. Genre](Images/prec_genre_3_sec.png)
+            - Consistent precision from 0.8 - 0.9 for all genres
         - Accuracy: 90%
 - `features_30_sec.csv`:
     - Model Parameters:
@@ -264,7 +272,10 @@ feature data:
         - `bootstrap = False`
     - Results:
         - [Confusion Matrix](Images/rf_30_optimized.png)
+            - Decrease contrast relative to three second confusion matrix
+            indicates lower performance
         - [Precision vs. Genre](Images/prec_genre_30_sec.png)
+            - Increase variability in precision (0.4 - 0.8) across all genres
         - Accuracy: 66%
 
 We thus find a 2% increase in accuracy training on the three second feature data
@@ -313,8 +324,9 @@ following structure:
 }
 ```
 We then read `results.json` using `D3.js` and plot the classification results
-using `plotly.js`. This interactive dashboard can be found
-[here](https://jsheppard95.github.io/MusicClassification/).
+using `plotly.js`. This interactive dashboard can be found by navigating to
+this repository's
+[GitHub Pages](https://jsheppard95.github.io/MusicClassification/).
 
 ## Conclusion and Future Considerations
 In summary, we find the Random Forest Classifier trained on statistical
@@ -327,7 +339,10 @@ classify songs from the same genre consistently, but we instead find a random
 distribution of actual genres for each K-Means predicted genre. Finally, we
 find the neural network to have significantly worse performance than the
 Random Forest Classifier, but this could be due to the limited image training
-set as indicated by the promising training accuracy for the metal genre.
+set as indicated by the promising training accuracy for the metal genre. We
+see this same result comparing the Random Forest Classifier's trained on three
+and 30 second feature data, in which the three second data set with roughly
+10 times the number of samples leads to significantly higher accuracy.
 
 Considering future analysis, it would be worthwhile to perform more
 traditional statistical analysis of the `.csv` feature data using methods such
