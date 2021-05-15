@@ -11,15 +11,15 @@ features and Mel Spectrogram images.
 ## Description of Data
 The data originates from the
 [GTZAN Genre collection](http://marsyas.info/downloads/datasets.html) and
-contains 1000 songs from 10 genres including blues, classical, country, disco, hiphop,
-jazz, metal, pop, reggae, and rock:
+contains 1000 songs from 10 genres including blues, classical, country, disco,
+hiphop, jazz, metal, pop, reggae, and rock:
 - 1000 `.wav` [audio files](Data/genres_original)
     - One per song, 30 seconds each
 - 999 `.png` Mel Spectrogram [image files](Data/images_original)
     - Missing one jazz image file
 - [`features_3_sec.csv`](Data/features_3_sec.csv)
     - 9990 samples containing 57 statistical features for each song such as
-    average tempo, rms chromatic shift, etc., over three second samples
+    average tempo, RMS chromatic shift, etc., over three second samples
     distributed over the original 1000 `.wav` audio files
 - [`features_30_sec.csv`](Data/features_30_sec.csv)
     - 1000 samples containing the same statistical features over the complete
@@ -27,8 +27,8 @@ jazz, metal, pop, reggae, and rock:
 
 ## Question We Hope to Answer
 We will compare the following methods for classifying music:
-- Models trained on song statistical features for three and
-30 second samples using:
+- Models trained on song statistical features for three and 30 second samples
+using:
     - Supervised machine learning (classification)
     - Unsupervised machine learning (clustering)
 - Image classification model trained on Mel Spectrogram images using a deep
@@ -93,7 +93,7 @@ the database that will be used for this analysis:
 $ mongo
 ```
 
-2) Create new MongoDB database using the mongo shell:
+2) Create a new MongoDB database using the mongo shell:
 ```
 > use Music_db
 ```
@@ -104,7 +104,7 @@ $ mongo
 Notebook `Load_Data.ipynb`.
 
 ### Optional Manual Data Loading
-Alternatively, one can manually load data into `Music_db` as follows: For CSV Data:
+Alternatively, one can manually load data into `Music_db`. For `.csv` data:
 ```
 $ mongoimport -d <database_name> -c <collection_name> --type csv --file <path_to_csv_file> --headerline
 ```
@@ -153,7 +153,6 @@ Loading our data for analysis from `Music_db` is accomplished in
 [`MusicClassification.ipynb`](MusicClassification.ipynb) using `pymongo` by
 first instantiating a client and reading the `.csv` data into a pandas
 DataFrame:
-
 ```
 client = MongoClient("localhost")
 db = client[DB_NAME]
@@ -163,7 +162,7 @@ features_3_df = pd.DataFrame(list(collection))
 
 We then create a `GridFS` instance to load the image files using the relative
 path from the working directory as the `filename` identifier for the function
-`GridFS.get_last_version` and convert each each from RGBA to grayscale:
+`GridFS.get_last_version` and convert each each image from RGBA to grayscale:
 ```
 fs = gridfs.GridFS(db)
 
@@ -205,7 +204,8 @@ images. We then compare the performance of the five models.
     `sklearn.model_selection.train_test_split`
 
 - K-Means Cluster:
-    - Shuffle feature data (handled for Random Forest Classifier by `train_test_split`)
+    - Shuffle feature data (handled for Random Forest Classifier by
+    `train_test_split`)
     - Scale feature data using `sklearn.preprocessing.StandardScaler` for PCA
     - Apply principal component analysis to reduce the 57 features to three
     principal components using  `sklearn.decomposition.PCA` for cluster
@@ -216,22 +216,20 @@ images. We then compare the performance of the five models.
     arrays to reduce input dimensionality
     - Split data into 75% training and 25% testing using
     `sklearn.model_selection.train_test_split`
-    - Normalize the grayscale pixel values by dividing each by its maximum value
-    of 255
+    - Normalize the grayscale pixel values by dividing each by its maximum
+    value of 255
 
 ### Training and Initial Results
 - Random Forest Classifier:
     - `features_3_sec.csv`:
         - Model Parameters:
             - `n_estimators = 500`
-            - Otherwise default parameters
         - Results:
             - [Confusion Matrix](Images/rf_3_initial_results.png)
             - Accuracy: 88%
     - `features_30_sec.csv`:
         - Model Parameters:
             - `n_estimators = 500`
-            - Otherwise default parameters
         - Results:
             - [Confusion Matrix](Images/rf_30_initial_results.png)
             - Accuracy: 66%
@@ -256,15 +254,15 @@ images. We then compare the performance of the five models.
         - Three additional `Dense` hidden layers with 100 nodes each and `relu`
         activation functions
         - Output `Dense` layer with 10 output nodes and `softmax` activation function
-        - `sparse_categorical_crossentropy` loss function
-        - `sgd` optimizer
-        - `accuracy` metric
+        - loss function: `sparse_categorical_crossentropy`
+        - optimizer: `sgd`
+        - metric: `accuracy`
     - Results:
         - [Training Loss and Accuracy](Images/nn_training.png)
         - Testing Loss: 2.38
         - Testing Accuracy: 24%
             - Limited training data leads to overfitting and poor testing
-            performance
+            accuracy
         - [Metal music](Images/metal00000.png) classified with
         [72% accuracy](Images/nn_metal_plot.png)
 
@@ -299,10 +297,11 @@ feature data:
         - `bootstrap = False`
     - Results:
         - [Confusion Matrix](Images/rf_30_optimized.png)
-            - Decrease contrast relative to three second confusion matrix
+            - Decreased contrast relative to three second confusion matrix
             indicates lower performance
         - [Precision vs. Genre](Images/prec_genre_30_sec.png)
-            - Increase variability in precision (0.4 - 0.8) across all genres
+            - Increased variability in precision (0.4 - 0.8) relative to
+            three second model across all genres
         - Accuracy: 66%
 
 We thus find a 2% increase in accuracy training on the three second feature data
@@ -367,13 +366,13 @@ distribution of actual genres for each K-Means predicted genre. Finally, we
 find the neural network to have significantly worse performance than the
 Random Forest Classifier, but this could be due to the limited image training
 set as indicated by the promising training accuracy for the metal genre. We
-see this same result comparing the Random Forest Classifier's trained on three
+see this same result comparing the Random Forest models trained on three
 and 30 second feature data, in which the three second data set with roughly
 10 times the number of samples leads to significantly higher accuracy.
 
 Considering future analysis, it would be worthwhile to perform more
 traditional statistical analysis of the `.csv` feature data using methods such
-as the two-sample t-test to identify and remove outliers which may improve
+as the one-sample t-test to identify and remove outliers that may hinder
 machine learning performance. Further, it would be interesting to generate our
 own features from the raw `.wav` audio files. This could be accomplished using
 Python's built-in `wave` module and the function
