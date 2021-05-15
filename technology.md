@@ -1,6 +1,7 @@
 # Technologies Used
 ## General Dependencies
 - Python 3.7.6
+- Jupyter Notebook 1.0.0
 - HTML
 - JavaScript
 - pandas 1.0.1
