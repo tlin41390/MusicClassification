@@ -35,6 +35,9 @@ classifying music:
 - Deep neural network image classification model trained on Mel Spectrogram
 images
 
+## High Level Visualizations
+[Interactive Dashboard](https://jsheppard95.github.io/MusicClassification/)
+
 ## Installation Instructions
 After cloning this repository, navigate to the root directory and install
 the necessary dependencies as follows:
@@ -259,7 +262,52 @@ We thus find a 2% increase accuracy training on the three second feature data
 while no change training on the full 30 second features.
 
 ## Dashboard Visualization
+To create an interactive display of the previous visualization, we write the
+classification results to [JSON files](Post_Analysis_Data/) and concatenate
+them into [`results.json`](docs/static/results.json). This file has the
+following structure:
+```
+{
+    "ids": [id for each model],
+    "metadata": [
+        {
+            id and model metadata
+        },
+        ...
+    ],
+    "results": [
+        {
+            "Random Forest precision": {
+                precision for each genre
+            },
+            ...
+        },
+        ...
+        {
+            "K-Means Predicted Class": {
+                genre and number of actual occurances in predicted class
+            },
+            ...
+        },
+        {
+            "Neural Network precision": {
+                precision for each genre
+            },
+            ...
+        }
+    ],
+    "images": [
+        {
+            id and reference to image associated with model
+        }
+    ]
+}
+```
+We then read `results.json` using the `D3.js` library and plot the
+classification results using `plotly.js`. This interactive dashboard can be
+found [here](https://jsheppard95.github.io/MusicClassification/).
 
+## Conclusion and Future Considerations
 
 ## Google Slides Presentation
 https://docs.google.com/presentation/d/1mtLgLnwL2p8m_hOIKtAYMIkNlP1axNtIMz0xgWbGiqM/edit?usp=sharing
