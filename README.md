@@ -8,52 +8,81 @@ Music is interesting, and we would like to compare classification techniques
 using machine learning and neural network models trained on song statistical
 features and Mel Spectrogram images.
 
-## Description of data
+## Description of Data
 The data originates from the
 [GTZAN Genre collection](http://marsyas.info/downloads/datasets.html) and
-contains 1000 songs from 10 genres including blues, classical, country, disco, hiphop,
-jazz, metal, pop, reggae, and rock:
+contains 1000 songs from 10 genres including blues, classical, country, disco,
+hiphop, jazz, metal, pop, reggae, and rock:
 - 1000 `.wav` [audio files](Data/genres_original)
     - One per song, 30 seconds each
 - 999 `.png` Mel Spectrogram [image files](Data/images_original)
     - Missing one jazz image file
 - [`features_3_sec.csv`](Data/features_3_sec.csv)
     - 9990 samples containing 57 statistical features for each song such as
-    average tempo, rms chromatic shift, etc., over three second samples
+    average tempo, RMS chromatic shift, etc., over three second samples
     distributed over the original 1000 `.wav` audio files
 - [`features_30_sec.csv`](Data/features_30_sec.csv)
     - 1000 samples containing the same statistical features over the complete
     30 second audio files
 
-## Question we hope to answer
+## Question We Hope to Answer
 We will compare the following methods for classifying music:
-- Models trained on song statistical features for three and
-30 second samples using:
+- Models trained on song statistical features for three and 30 second samples
+using:
     - Supervised machine learning (classification)
     - Unsupervised machine learning (clustering)
 - Image classification model trained on Mel Spectrogram images using a deep
 neural network
 
-## High Level Visualization
-[Interactive Dashboard](https://jsheppard95.github.io/MusicClassification/)
+## Interactive Dashboard
+An interactive dashboard visualizing the results of this analysis can be found
+by navigating to this repository's
+[GitHub Pages](https://jsheppard95.github.io/MusicClassification/)
+
+## Software Resources
+### General Dependencies
+- Python 3.7.6
+- Jupyter Notebook 1.0.0
+- HTML
+- JavaScript
+- pandas 1.0.1
+- NumPy 1.19.5
+- PIL 7.0.0
+
+### Database Dependecies
+- MongoDB 4.4.3
+- PyMongo 3.11.2
+- GridFS
+
+### Model Dependencies
+- scikit-learn 0.22.1
+- TensorFlow 2.4.1
+
+### Visualization Dependencies
+- Matplotlib 3.1.3
+- Seaborn 0.10.0
+- Plotly 4.14.3
+- Bootstrap 3.3.7
+- D3.js 5.5.0
+- Plotly.js 1.58.4
 
 ## Installation Instructions
 After cloning this repository, navigate to the root directory and install
 the necessary dependencies as follows:
 
-### Install using `conda`
+### Install Using `conda`
 Install into an isolated `conda` environment with name `envname`:
 ```
 $ conda env create --name envname --file=environment.yml
 ```
 
-### Install using `pip`
+### Install Using `pip`
 Install using the `requirements.txt` file:
 ```
 $ pip install -r requirements.txt
 ```
 
-## Database Installation and Usage (MongoDB)
+## MongoDB Installation and Usage
 Next install MongoDB by following the
 [official documentation](https://docs.mongodb.com/manual/administration/install-community/).
 After successful installation, use the following steps to create and populate
@@ -64,7 +93,7 @@ the database that will be used for this analysis:
 $ mongo
 ```
 
-2) Create new MongoDB database using the mongo shell:
+2) Create a new MongoDB database using the mongo shell:
 ```
 > use Music_db
 ```
@@ -72,10 +101,10 @@ $ mongo
 3) Exit the mongo shell using `<CTRL+D>`.
 
 4) Populate the database `Music_db` by running all cells in the Jupyter
-Notebook `Load_Data.ipynb`.
+Notebook [`Load_Data.ipynb`](Load_Data.ipynb).
 
 ### Optional Manual Data Loading
-Alternatively, one can manually load data into `Music_db` as follows: For CSV Data:
+Alternatively, one can manually load data into `Music_db`. For `.csv` data:
 ```
 $ mongoimport -d <database_name> -c <collection_name> --type csv --file <path_to_csv_file> --headerline
 ```
@@ -122,9 +151,7 @@ fs.files
 ## Python Database Interface
 Loading our data for analysis from `Music_db` is accomplished in
 [`MusicClassification.ipynb`](MusicClassification.ipynb) using `pymongo` by
-first instantiating a client and reading the `.csv` data into a pandas
-DataFrame:
-
+instantiating a client and reading the `.csv` data into a pandas DataFrame:
 ```
 client = MongoClient("localhost")
 db = client[DB_NAME]
@@ -134,7 +161,7 @@ features_3_df = pd.DataFrame(list(collection))
 
 We then create a `GridFS` instance to load the image files using the relative
 path from the working directory as the `filename` identifier for the function
-`GridFS.get_last_version` and convert each each from RGBA to grayscale:
+`GridFS.get_last_version` and convert each each image from RGBA to grayscale:
 ```
 fs = gridfs.GridFS(db)
 
@@ -154,19 +181,21 @@ for folder in images_folder:
 images = np.asarray(images)
 ```
 
-## Model Analysis
-We first classify music genres using machine learning by training a supervised
-Random Forest Classifier (`sklearn.ensemble.RandomForestClassifier`) and
-an unsupervised K-Means Cluster model (`sklearn.cluster.KMeans`) on both the
-three and 30 second `.csv` data, then build a deep neural network using
-`tensorflow.keras.models.Sequential` and train on the `.png` Mel
-Spectrogram images, and finally compare the performance of the five models.
+## Data Exploration and Model Analysis
+We first classify music genres by training machine learning models on both the
+three and 30 seconds `.csv` data using a Random Forest Classifier
+(`sklearn.ensemble.RandomForestClassifier`) since it is a robust ensemble
+learning method, a K-Means Cluster model (`sklearn.cluster.KMeans`) to compare
+an unsupervised clustering method, and finally a deep neural network
+(`tensorflow.keras.models.Sequential`) to handle the `.png` Mel Spectrogram
+images. We then compare the performance of the five models.
 
 ### Data Preprocessing:
 - All Models:
-    - Drop unnecessary columns `_id`, `filename`, and `length` (machine learning only,
-    identification and rendundant for all samples)
-    - Convert categorical genre target labels to integers 0 through 9
+    - Drop unnecessary columns `_id`, `filename`, and `length` (machine
+    learning only, identification and rendundant for all samples)
+    - Convert categorical genre target labels to integers 0 through 9 so that
+    entire data set is numerical
 
 - Random Forest Classifier:
     - Separate feature data from target genre (column = `label`)
@@ -174,31 +203,32 @@ Spectrogram images, and finally compare the performance of the five models.
     `sklearn.model_selection.train_test_split`
 
 - K-Means Cluster:
-    - Shuffle feature data (handled for Random Forest Classifier by `train_test_split`)
-    - Scale feature data using `sklearn.preprocessing.StandardScaler`
+    - Shuffle feature data (handled for Random Forest Classifier by
+    `train_test_split`)
+    - Scale feature data using `sklearn.preprocessing.StandardScaler` for PCA
     - Apply principal component analysis to reduce the 57 features to three
-    principal components using  `sklearn.decomposition.PCA`
+    principal components using  `sklearn.decomposition.PCA` for cluster
+    visualization in three dimensions
 
 - Neural Network
-    - Convert RGBA images to RGB and then to grayscale and finally NumPy arrays
+    - Convert RGBA images to RGB and then to grayscale and finally NumPy
+    arrays to reduce input dimensionality
     - Split data into 75% training and 25% testing using
     `sklearn.model_selection.train_test_split`
-    - Normalize the grayscale pixel values by dividing each by its maximum value
-    of 255
+    - Normalize the grayscale pixel values by dividing each by its maximum
+    value of 255
 
 ### Training and Initial Results
 - Random Forest Classifier:
     - `features_3_sec.csv`:
         - Model Parameters:
             - `n_estimators = 500`
-            - Otherwise default parameters
         - Results:
             - [Confusion Matrix](Images/rf_3_initial_results.png)
             - Accuracy: 88%
     - `features_30_sec.csv`:
         - Model Parameters:
             - `n_estimators = 500`
-            - Otherwise default parameters
         - Results:
             - [Confusion Matrix](Images/rf_30_initial_results.png)
             - Accuracy: 66%
@@ -223,15 +253,15 @@ Spectrogram images, and finally compare the performance of the five models.
         - Three additional `Dense` hidden layers with 100 nodes each and `relu`
         activation functions
         - Output `Dense` layer with 10 output nodes and `softmax` activation function
-        - `sparse_categorical_crossentropy` loss function
-        - `sgd` optimizer
-        - `accuracy` metric
+        - loss function: `sparse_categorical_crossentropy`
+        - optimizer: `sgd`
+        - metric: `accuracy`
     - Results:
         - [Training Loss and Accuracy](Images/nn_training.png)
         - Testing Loss: 2.38
         - Testing Accuracy: 24%
             - Limited training data leads to overfitting and poor testing
-            performance
+            accuracy
         - [Metal music](Images/metal00000.png) classified with
         [72% accuracy](Images/nn_metal_plot.png)
 
@@ -239,7 +269,7 @@ Spectrogram images, and finally compare the performance of the five models.
 Focusing on the highest performing Random Forest Classifier, we optimize the
 model using `sklearn.model_selection.RandomizedSearchCV` to perform a grid
 search over model hyperparameters. This results in the following optimized
-parameters and resulting performances for the three and 30 second
+parameters and accuracies after retraining for the three and 30 second
 feature data:
 - `features_3_sec.csv`:
     - Model Parameters:
@@ -251,7 +281,10 @@ feature data:
         - `bootstrap = False`
     - Results:
         - [Confusion Matrix](Images/rf_3_optimized.png)
+            - Darker diagonal entries indicate good performance across all
+            genres
         - [Precision vs. Genre](Images/prec_genre_3_sec.png)
+            - Consistent precision from 0.8 - 0.9 for all genres
         - Accuracy: 90%
 - `features_30_sec.csv`:
     - Model Parameters:
@@ -263,7 +296,11 @@ feature data:
         - `bootstrap = False`
     - Results:
         - [Confusion Matrix](Images/rf_30_optimized.png)
+            - Decreased contrast relative to three second confusion matrix
+            indicates lower performance
         - [Precision vs. Genre](Images/prec_genre_30_sec.png)
+            - Increased variability in precision (0.4 - 0.8) relative to
+            three second model across all genres
         - Accuracy: 66%
 
 We thus find a 2% increase in accuracy training on the three second feature data
@@ -312,8 +349,9 @@ following structure:
 }
 ```
 We then read `results.json` using `D3.js` and plot the classification results
-using `plotly.js`. This interactive dashboard can be found
-[here](https://jsheppard95.github.io/MusicClassification/).
+using `plotly.js`. This interactive dashboard can be found by navigating to
+this repository's
+[GitHub Pages](https://jsheppard95.github.io/MusicClassification/).
 
 ## Conclusion and Future Considerations
 In summary, we find the Random Forest Classifier trained on statistical
@@ -326,11 +364,14 @@ classify songs from the same genre consistently, but we instead find a random
 distribution of actual genres for each K-Means predicted genre. Finally, we
 find the neural network to have significantly worse performance than the
 Random Forest Classifier, but this could be due to the limited image training
-set as indicated by the promising training accuracy for the metal genre.
+set as indicated by the promising training accuracy for the metal genre. We
+see this same result comparing the Random Forest models trained on three
+and 30 second feature data, in which the three second data set with roughly
+10 times the number of samples leads to significantly higher accuracy.
 
 Considering future analysis, it would be worthwhile to perform more
 traditional statistical analysis of the `.csv` feature data using methods such
-as the two-sample t-test to identify and remove outliers which may improve
+as the one-sample t-test to identify and remove outliers that may hinder
 machine learning performance. Further, it would be interesting to generate our
 own features from the raw `.wav` audio files. This could be accomplished using
 Python's built-in `wave` module and the function
