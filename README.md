@@ -244,40 +244,25 @@ Spectrogram images, and finally compare the performance of the five models.
         - [Plot](Images/kmeans_act_pred_30.png) of number of each actual genre
         for the predicted metal genre
         - Mostly random classification
+- Neural Network:
+    - Followed [How to train neural networks for image classification - Part 1](https://medium.com/nerd-for-tech/how-to-train-neural-networks-for-image-classification-part-1-21327fe1cc1)
+    - [Model Summary](Images/nn_summary.png)
+    - Input layer with 124416 inputs (image width * image height = 288 * 432)
+    - `Dense` hidden layer with 300 nodes and `relu` activation function
+    - Three additional `Dense` hidden layers with 100 nodes each and `relu`
+    activation functions
+    - Output layer with 10 output nodes and `softmax` activation function
+    - `sparse_categorical_crossentropy` loss function
+    - `sgd` optimizer
+    - `accuracy` metric
+    - [Training Loss and Accuracy](Images/nn_training.png)
+    - Testing Loss: 2.38
+    - Testing Accuracy: 24%
+        - Clear overfitting
+    - [Metal music](Images/metal00000.png) classified with
+    [72% accuracy](Images/nn_metal_plot.png)
 
-
-After initial training with minimal hyper-parameter tuning, we obtain the following
-results:
-- `sklearn.tree.DecisionTreeClassifier()`: 63% accuracy
-- `sklearn.neighbors.KNeigborsClassifier(n_neighbors=21)`: 28% accuracy
-- `sklearn.naive_bayes.GaussianNB()`: 43% accuracy
-- `sklearn.ensemble.RandomForestClassifier()`: 90% accuracy
-
-## Neural Network Model
-We next define a deep layer neural network to classify music genres from the
-Mel Spectrogram images following
-[How to train neural networks for image classification - Part 1](https://medium.com/nerd-for-tech/how-to-train-neural-networks-for-image-classification-part-1-21327fe1cc1)
-as an example.
-
-### Data Preprocessing
-- Convert RGBA images to RGB and then to Grayscale.
-- Convert categorical genre labels to integers 0 through 9.
-
-We then define a Sequential Model with the following
-architecture and parameters:
-- Input layer with 124416 inputs = image_width * image_height = 288 * 432
-- One Dense layer with 300 nodes follwed by four Dense layers with 100 nodes
-each
-- Ouput layer with 10 output nodes for the 10 music genres to classify
-- `relu` activation function at each hidden layer
-- `softmax` activation function at output layer
-- `sparse_categorical_crossentropy` loss function
-- `sgd` optimizer
-- `accuracy` metric
-
-Results:
-- Testing Loss: 2.38
-- Testing Accuracy: 24%
+### Random Forest Classifier Optimization
 
 ## Google Slides Presentation
 https://docs.google.com/presentation/d/1mtLgLnwL2p8m_hOIKtAYMIkNlP1axNtIMz0xgWbGiqM/edit?usp=sharing
