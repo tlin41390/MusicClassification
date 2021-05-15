@@ -154,13 +154,14 @@ for folder in images_folder:
 images = np.asarray(images)
 ```
 
-## Model Analysis
-We first classify music genres using machine learning by training a supervised
-Random Forest Classifier (`sklearn.ensemble.RandomForestClassifier`) and
-an unsupervised K-Means Cluster model (`sklearn.cluster.KMeans`) on both the
-three and 30 second `.csv` data, then build a deep neural network using
-`tensorflow.keras.models.Sequential` and train on the `.png` Mel
-Spectrogram images, and finally compare the performance of the five models.
+## Data Exploration and Model Analysis
+We first classify music genres using by training machine learning models on
+both the three and 30 seconds `.csv` data using a Random Forest Classifier
+(`sklearn.ensemble.RandomForestClassifier`) since it is a robust ensemble
+learning method, a K-Means Cluster model (`sklearn.cluster.KMeans`) to compare
+an unsupervised clustering method, and finally a deep neural network
+(`tensorflow.keras.models.Sequential`) to handle the `.png` Mel Spectrogram
+images. We then compare the performance of the five models.
 
 ### Data Preprocessing:
 - All Models:
