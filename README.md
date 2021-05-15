@@ -232,7 +232,8 @@ Spectrogram images, and finally compare the performance of the five models.
         - [Training Loss and Accuracy](Images/nn_training.png)
         - Testing Loss: 2.38
         - Testing Accuracy: 24%
-            - Clear overfitting
+            - Limited training data leads to overfitting and poor testing
+            performance
         - [Metal music](Images/metal00000.png) classified with
         [72% accuracy](Images/nn_metal_plot.png)
 
@@ -312,6 +313,19 @@ classification results using `plotly.js`. This interactive dashboard can be
 found [here](https://jsheppard95.github.io/MusicClassification/).
 
 ## Conclusion and Future Considerations
+In summary, we find the Random Forest Classifier trained on statistical
+features for three second song samples from 10 target genres to be the highest
+performing model, reaching 90% accuracy over all 10 genres. Considering future
+analysis, it would be worthwhile to perform more traditional statistical
+analysis of the `.csv` feature data using methods such as the two-sample
+t-test to identify and remove outliers which may improve machine learning
+performance. Further, it would be interesting generate our own features from
+the raw `.wav` audio files. This could be accomplished using Python's built-in
+`wave` module the function
+[`python_speech_features.mfcc`](https://python-speech-features.readthedocs.io/en/latest/)
+to generate MFCC (Mel Frequency Cepstral Coefficients) features. This would in
+turn generalize the model with the potential to be deployed as an automated
+music genre classifier for any standard `.wav` audio file.
 
 ## Google Slides Presentation
 https://docs.google.com/presentation/d/1mtLgLnwL2p8m_hOIKtAYMIkNlP1axNtIMz0xgWbGiqM/edit?usp=sharing
