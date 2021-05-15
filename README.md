@@ -18,7 +18,7 @@ jazz, metal, pop, reggae, and rock:
 - 999 `.png` Mel Spectrogram [image files](Data/images_original)
     - Missing one jazz image file
 - [`features_3_sec.csv`](Data/features_3_sec.csv)
-    - 9990 samples containing 57 statistical features for eacg song such as
+    - 9990 samples containing 57 statistical features for each song such as
     average tempo, rms chromatic shift, etc., over three second samples
     distributed over the original 1000 `.wav` audio files
 - [`features_30_sec.csv`](Data/features_30_sec.csv)
@@ -318,9 +318,9 @@ using `plotly.js`. This interactive dashboard can be found
 ## Conclusion and Future Considerations
 In summary, we find the Random Forest Classifier trained on statistical
 features for three second song samples from 10 target genres to be the highest
-performing model, reaching 90% accuracy over all 10 genres. In constast, the
+performing model, reaching 90% accuracy over all 10 genres. In contrast, the
 K-Means classifier is not an effective method. One should note that since this
-model is unsupervised, the predicted genre labels do not need to corespond
+model is unsupervised, the predicted genre labels do not need to correspond
 directly to the original labels. One would however expect an accurate model to
 classify songs from the same genre consistently, but we instead find a random
 distribution of actual genres for each K-Means predicted genre. Finally, we
