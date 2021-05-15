@@ -1,21 +1,25 @@
 # Technologies Used
-## Data Cleaning and Analysis
-Cleaning and exploratory analysis on the data will be done in Python using
-the pandas library.
+# General Dependencies
+- Python 3.7.6
+- HTML
+- JavaScript
+- pandas 1.0.1
+- NumPy 1.19.5
+- PIL 7.0.0
 
-## Database Storage
-MongoDB is the database we intend to use due to its flexibility of handling
-`.csv`, `.wav` audio files, and `.png` image files along with the `pymongo`
-interface for reading data into Python.
+## Database Dependecies
+- MongoDB 4.4.3
+- PyMongo 3.11.2
+- GridFS
 
-## Machine Learning
-scikit-learn for classification of music genres based on song statistical
-features:
-- DecisionTreeClassifier
-- KNeighborsClassifier
-- GaussianNB Classifier
-- RandomForestClassifier
-TensorFlow and keras for neural network image analysis.
+# Model Dependencies
+- scikit-learn 0.22.1
+- TensorFlow 2.4.1
 
-## Dashboard
-JavaScript/HTML
+# Visualization Dependencies
+- Matplotlib 3.1.3
+- Seaborn 0.10.0
+- Plotly 4.14.3
+- Bootstrap 3.3.7
+- D3.js 5.5.0
+- Plotly.js 1.58.4
