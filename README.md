@@ -8,7 +8,7 @@ Music is interesting, and we would like to compare classification techniques
 using machine learning and neural network models trained on song statistical
 features and Mel Spectrogram images.
 
-## Description of data
+## Description of Data
 The data originates from the
 [GTZAN Genre collection](http://marsyas.info/downloads/datasets.html) and
 contains 1000 songs from 10 genres including blues, classical, country, disco, hiphop,
@@ -25,7 +25,7 @@ jazz, metal, pop, reggae, and rock:
     - 1000 samples containing the same statistical features over the complete
     30 second audio files
 
-## Question we hope to answer
+## Question We Hope to Answer
 We will compare the following methods for classifying music:
 - Models trained on song statistical features for three and
 30 second samples using:
@@ -41,19 +41,19 @@ neural network
 After cloning this repository, navigate to the root directory and install
 the necessary dependencies as follows:
 
-### Install using `conda`
+### Install Using `conda`
 Install into an isolated `conda` environment with name `envname`:
 ```
 $ conda env create --name envname --file=environment.yml
 ```
 
-### Install using `pip`
+### Install Using `pip`
 Install using the `requirements.txt` file:
 ```
 $ pip install -r requirements.txt
 ```
 
-## Database Installation and Usage (MongoDB)
+## MongoDB Installation and Usage
 Next install MongoDB by following the
 [official documentation](https://docs.mongodb.com/manual/administration/install-community/).
 After successful installation, use the following steps to create and populate
