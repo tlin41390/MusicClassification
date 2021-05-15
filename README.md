@@ -155,8 +155,8 @@ images = np.asarray(images)
 ```
 
 ## Data Exploration and Model Analysis
-We first classify music genres using by training machine learning models on
-both the three and 30 seconds `.csv` data using a Random Forest Classifier
+We first classify music genres by training machine learning models on both the
+three and 30 seconds `.csv` data using a Random Forest Classifier
 (`sklearn.ensemble.RandomForestClassifier`) since it is a robust ensemble
 learning method, a K-Means Cluster model (`sklearn.cluster.KMeans`) to compare
 an unsupervised clustering method, and finally a deep neural network
