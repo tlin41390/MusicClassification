@@ -191,17 +191,19 @@ Spectrogram images, and finally compare the performance of the five models.
 ### Training and Initial Results
 - Random Forest Classifier:
     - `features_3_sec.csv`:
-        - `n_estimators = 500`
-        - Otherwise default parameters
-        - 57 statistical features for three second song samples
-        - [Confusion Matrix](Images/rf_3_initial_results.png)
-        - Accuracy: 88%
+        - Model Parameters:
+            - `n_estimators = 500`
+            - Otherwise default parameters
+        - Results:
+            - [Confusion Matrix](Images/rf_3_initial_results.png)
+            - Accuracy: 88%
     - `features_30_sec.csv`:
-        - `n_estimators = 500`
-        - Otherwise default parameters
-        - 57 statistical features for 30 second song samples
-        - [Confusion Matrix](Images/rf_30_initial_results.png)
-        - Accuracy: 66%
+        - Model Parameters:
+            - `n_estimators = 500`
+            - Otherwise default parameters
+        - Results:
+            - [Confusion Matrix](Images/rf_30_initial_results.png)
+            - Accuracy: 66%
 - K-Means Cluster:
     - `n_clusters = 10`, i.e the number of genres to classify
     - `features_3_sec.csv`:
@@ -217,20 +219,22 @@ Spectrogram images, and finally compare the performance of the five models.
 - Neural Network:
     - Followed [How to train neural networks for image classification - Part 1](https://medium.com/nerd-for-tech/how-to-train-neural-networks-for-image-classification-part-1-21327fe1cc1)
     - [Model Summary](Images/nn_summary.png)
-    - Input layer with 124416 inputs (image width * image height = 288 * 432)
-    - `Dense` hidden layer with 300 nodes and `relu` activation function
-    - Three additional `Dense` hidden layers with 100 nodes each and `relu`
-    activation functions
-    - Output layer with 10 output nodes and `softmax` activation function
-    - `sparse_categorical_crossentropy` loss function
-    - `sgd` optimizer
-    - `accuracy` metric
-    - [Training Loss and Accuracy](Images/nn_training.png)
-    - Testing Loss: 2.38
-    - Testing Accuracy: 24%
-        - Clear overfitting
-    - [Metal music](Images/metal00000.png) classified with
-    [72% accuracy](Images/nn_metal_plot.png)
+    - Model Parameters:
+        - Input layer with 124416 inputs (image width * image height = 288 * 432)
+        - `Dense` hidden layer with 300 nodes and `relu` activation function
+        - Three additional `Dense` hidden layers with 100 nodes each and `relu`
+        activation functions
+        - Output layer with 10 output nodes and `softmax` activation function
+        - `sparse_categorical_crossentropy` loss function
+        - `sgd` optimizer
+        - `accuracy` metric
+    - Results:
+        - [Training Loss and Accuracy](Images/nn_training.png)
+        - Testing Loss: 2.38
+        - Testing Accuracy: 24%
+            - Clear overfitting
+        - [Metal music](Images/metal00000.png) classified with
+        [72% accuracy](Images/nn_metal_plot.png)
 
 ### Random Forest Classifier Optimization
 Focusing on the highest performing Random Forest Classifier, we optimize the
