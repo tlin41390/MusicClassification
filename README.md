@@ -4,56 +4,79 @@
 Music Classification
 
 ## Reason for Topic
-Music is cool. There are different files for music and visuals that 
-are interesting to categorize by genre and train a machine learning model
-to classify this data set, and we further plan to create visualizations
-illustrating data relationships.
+Music is interesting, and we would like to see if a machine learning or neural
+network model can effectively classify songs according to their genre and
+compare techniques for doing so.
 
 ## Description of data
-The data comes from the GTZAN Genre collection used in the paper "Musical
-genre classification of audio signals" by G. Tzanetakis and P. Cook. It
-contains `.wav` audio files, Mel Spectrogram images as `.png` files, and two
-`.csv` files containing statistical features of the songs such as average
-tempo, rms chromatic shift, etc, over three second and 30 second samples.
-The data set as a whole contains 1000 songs processed as follows:
-[1000 wave files](Data/genres_original),
-[999 Mel Spectrogram images](Data/images_original),
-[1000 samples of statistical features from 30 second song samples](Data/features_30_sec.csv),
-and [9990 samples statistical features from 3 second song sample](Data/features_3_sec.csv).
+The data originates from the
+[GTZAN Genre collection](http://marsyas.info/downloads/datasets.html) and
+contains 1000 songs from the 10 genres blues, classical, country, disco, hiphop,
+jazz, metal, pop, reggae, and rock:
+- 1000 `.wav` [audio files](Data/genres_original)
+    - One per song, 30 seconds each
+- 999 `.png` Mel Spectrogram [image files](Data/images_original)
+    - Missing one jazz image file
+- [`features_3_sec.csv`](Data/features_3_sec.csv)
+    - 9990 samples containing 57 statistical features of the songs such as
+    average tempo, rms chromatic shift, etc., over three second song samples
+    distributed over the original 1000 `.wav` audio files
+- [`features_30_sec.csv`](Data/features_30_sec.csv)
+    - 1000 samples containing the same statistical features over the complete
+    30 second audio files
 
 ## Question we hope to answer
-Given the variety of data, we will compare methods for classifying music. The
-first method will be classifiying the genre of audio files based on numerical
-features using machine learning, the second method classifying genres based on
-the Mel Spectrogram image files, and the third method classifiying genres from
-the raw `.wav` audio files.
+Given the variety of data, we will compare the following methods for
+classifying music:
+- Machine learning models trained on song statistical features for three and
+30 second samples using:
+    - Supervised machine learning (classification)
+    - Unsupervised machine learning (clustering)
+- Deep neural network image classification model trained on Mel Spectrogram
+images
 
-## Database Usage
-### Mongo Interface
-To launch and load data into a MongoDB database, use the following steps
-(MacOS):
+## Installation Instructions
+After cloning this repository, navigate to the root directory and install
+the necessary dependencies as follows:
+
+### Install using `conda`
+Install the necessary dependencies into an isolated `conda` environment with
+name `envname`:
+```
+$ conda env create --name envname --file=environment.yml
+```
+
+### Install using `pip`
+Install the necessary dependencies using the `requirements.txt` file:
+```
+$ pip install -r requirements.txt
+```
+
+## Database Usage (MongoDB)
+To launch and load data into a MongoDB database, use the following steps:
 
 1) Install MongoDB:
 MacOS:
-Install using Homebrew by following the appropriate section of its
+a Install using Homebrew by following the appropriate section of its
 [installation instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)
 
-Check successful installation:
+b) Check successful installation:
 ```
 $ brew services list
 Name              Status  User Plist
 mongodb-community stopped
 ```
 
-Start `mongdb-community` service:
+c) Start `mongdb-community` service:
 ```
 $ brew services start mongodb-community
 ==> Successfully started `mongodb-community` (label: homebrew.mxcl.mongodb-community)
 ```
 Windows:
-Follow the [MongoDB Official Documentation](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
+a) Install by following the
+[MongoDB Official Documentation](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
 
-2) Launch MongoDB shell:
+2) Launch the MongoDB shell:
 ```
 $ mongo
 ```
@@ -65,12 +88,12 @@ $ mongo
 
 4) Exit the mongo shell using `<CTRL+D>`.
 
-#### Automatic Data Loading
+### Automatic Data Loading
 5) Automatic population of the database `Music_db` created in steps 1-4 is
 accomplished by opening and running all cells in the Jupyter Notebook
 `Load_Data.ipynb`.
 
-#### Optional Manual Data Loading
+### Optional Manual Data Loading
 Alternatively, one can manually load data into `Music_db` as follows: For CSV Data:
 ```
 $ mongoimport -d <database_name> -c <collection_name> --type csv --file <path_to_csv_file> --headerline
@@ -80,11 +103,11 @@ And for the image/wave data:
 $ mongofiles -d=<database_name> put <path_to_png_or_wav_file>
 ```
 If loading data manually, ensure to update `config.py` with the chosen
-database and collection names. Also note that `mongofiles` will set the `filename`
+database and collection names. Also note that `mongofiles` sets the `filename`
 field of each document in the GridFS `fs.files` collection to the specified
 `<path_to_png_or_wav_file>`. One should therefore run the `mongofiles` command
-from the root of this repository since this relative path is used to extract
-the data from MongoDB in `Music_Classification.ipynb`.
+from the root of this repository since this relative path is read and used to
+extract the data from MongoDB in `Music_Classification.ipynb`.
 
 6) Check image and wave file storage from the command line:
 ```
@@ -115,11 +138,14 @@ fs.files
 ...
 
 ```
-### Python Interface
-1) Read in the CSV data into a jupyter notebook from the MongoDB database using
-`pymongo.MongoClient`, then instantiate the database and load the data into a
-pandas DataFrame:
+## Python Database Interface
+Loading our data for analysis from `Music_db` is accomplished in
+[`MusicClassification.ipynb`](MusicClassification.ipynb) using `pymongo` by
+first instatiating a client and reading the `.csv` data into a pandas
+DataFrame as follows:
+
 ```
+import pandas as pd
 from pymongo import MongoClient
 from config import DB_NAME, FEAT_3_COLLECTION_NAME
 client = MongoClient("localhost")
@@ -128,31 +154,28 @@ collection = db[FEAT_3_COLLECTION_NAME].find()
 features_3_df = pd.DataFrame(list(collection))
 ```
 
-2) Create a GridFS file instance to load the image files:
+We then create a `GridFS` instance to load the image files using the relative
+path from the working directory as the `filename` identifier for the function
+`GridFS.get_last_version` and convert each each from RGBA to grayscale:
 ```
 import gridfs
-cwd_bytes = subprocess.check_output("pwd")
-cwd = cwd_bytes.decode("utf-8").rstrip("\n") + "/"
-# identify path for images
-images_path = "Data/images_original/"
-byte_images = subprocess.check_output(["ls", cwd + images_path])
-images_folder = byte_images.decode("utf-8").split("\n")
-images_folder.pop(-1)
+import subprocess
+from PIL import Image, ImageOps
+import numpy as np
 
 fs = gridfs.GridFS(db)
 
 images = []
-genres = []
 
 for folder in images_folder:
-    # Get files in each image-genre folder
+    # Get files in each image folder
     byte_files = subprocess.check_output(["ls", cwd + images_path + folder])
     files = byte_files.decode("utf-8").split("\n")
     files.pop(-1)
     
     for file in files:
         # Load image using its relative path as its GridFS identifier
-        file_path = images_path + folder + "/" + file
+        file_path = images_path + folder + "/" + file  # images_path initialized
         image_raw = fs.get_last_version(file_path)
         image_bytes = image_raw.read()
         rgba_image = Image.open(io.BytesIO(image_bytes))
@@ -160,27 +183,48 @@ for folder in images_folder:
         gray_image = ImageOps.grayscale(rgb_image)
         image_data = np.asarray(gray_image)
         images.append(image_data)
-        genres.append(folder)
+images = np.asarray(images)
 ```
 
-## Machine Learning Model
-We first classify music genres by training various machine learning models on
-the statistical features of each song taken over a three second sample in
-[`features_3_sec.csv`](Data_Sample/features_3_sec.csv). This sample contains
-9990 songs, each belonging to one of ten genres (our target classes).
+## Machine Learning and Neural Network Analysis
+We first classify music genres using machine learning by training a supervised
+Random Forest Classifier model (`sklearn.ensemble.RandomForestClassifier`) and
+an unsupervised K-Means cluster model (`sklearn.cluster.KMeans`) on both the
+three and 30 second `.csv` data, then build a deep neural network using
+`tensorflow.keras.models.Sequential` and train on the `.png` Mel
+Spectrogram images, and finally compare the performance of the five models.
 
 ### Data Preprocessing:
-- Drop unnecessary identification columns `_id` and `filename` along with
-`length` which is constant for all samples.
-- Separate feature data from target genre label.
-- Convert categorical genre target labels to integers 0 through 9.
-- Split data in 75% training and 25% testing using
-`sklearn.model_selection.train_test_split`.
-- Test the following models:
-    - DecisionTreeClassifier
-    - KNeighborsClassifier
-    - GaussianNB
-    - RandomForestClassifier
+#### Machine Learning
+All Models:
+- Drop unnecessary columns `_id`, `filename`, and `length` (identification and
+rendundant for all samples)
+- Convert categorical genre target labels to integers 0 through 9
+
+Random Forest Classifier:
+- Separate feature data from target genre (column = `label`)
+- Split data into 75% training and 25% testing using
+`sklearn.model_selection.train_test_split`
+
+K-Means Cluster:
+- Shuffle feature data
+- Scale feature data using `sklearn.preprocessing.StandardScaler`
+- Apply principal component analysis to reduce the 57 features to three
+principal components using  `sklearn.decomposition.PCA`
+
+#### Neural Network
+- Split data into 75% training and 25% testing using
+`sklearn.model_selection.train_test_split`
+- Normalize the grayscale pixel values by dividing each by its maximum value
+of 255
+
+### Training and Initial Results
+- Random Forest Classifier:
+    - `n_estimators = 500`
+    - Otherwise default parameters
+    - Three second song samples (`features_3_sec.csv`)
+    - Accuracy: 88%
+
 
 After initial training with minimal hyper-parameter tuning, we obtain the following
 results:

@@ -83,7 +83,8 @@ function buildModelsCompared() {
       y: acc,
       type: "bar",
       marker: {
-        color: ['rgba(146,235,56,0.65)', 'rgba(222,45,38,0.95)', 'rgba(86,200,34,0.65)']
+        color: ["rgba(146, 235, 56, 0.65)", "rgba(222, 45, 38, 0.95)",
+                "rgba(86, 200, 34, 0.65)"]
       }
     }];
 
@@ -163,12 +164,15 @@ function buildCharts(sample) {
       var buttons = [];
       var cnt = 0;
       var is_visible = true;
-      var labels = ["Predicted jazz", "Predicted metal", "Predicted disco", "Predicted pop",
-                    "Predicted reggae", "Predicted classical", "Predicted rock",
-                    "Predicted blues", "Predicted hiphop", "Predicted country"];
+      var labels = ["Predicted jazz", "Predicted metal", "Predicted disco",
+                    "Predicted pop", "Predicted reggae",
+                    "Predicted classical", "Predicted rock",
+                    "Predicted blues", "Predicted hiphop",
+                    "Predicted country"];
       // Iterate through KMeans data
       // key = Predicted class
-      // value = JSON files with keys = actual genres / values = number of samples of each
+      // value = JSON files with keys = actual genres / values = number of
+      // samples of each
       for (const [key, value] of Object.entries(getFirst)) {
         // skip first "id" key
         if (key != "id") {
@@ -189,7 +193,8 @@ function buildCharts(sample) {
           };
 
           // Create dropdown button
-          let display = [false, false, false, false, false, false, false, false, false, false];
+          let display = [false, false, false, false, false,
+                         false, false,false, false, false];
           display[cnt] = true;
           let button = {
             method: "restyle",
