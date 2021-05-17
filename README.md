@@ -334,6 +334,7 @@ following structure:
             },
             ...
         },
+        ...
         {
             "Neural Network precision": {
                 precision for each genre
