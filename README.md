@@ -344,7 +344,8 @@ following structure:
     "images": [
         {
             id and reference to image associated with model
-        }
+        },
+        ...
     ]
 }
 ```
