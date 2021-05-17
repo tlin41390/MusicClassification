@@ -168,10 +168,10 @@ fs = gridfs.GridFS(db)
 images = []
 
 for folder in images_folder:
+    files = glob.glob(os.path.join(folder, "*"))
     for file in files:
         # Load image using its relative path as its GridFS identifier
-        file_path = images_path + folder + "/" + file
-        image_raw = fs.get_last_version(file_path)
+        image_raw = fs.get_last_version(file)
         image_bytes = image_raw.read()
         rgba_image = Image.open(io.BytesIO(image_bytes))
         rgb_image = rgba_image.convert("RGB")
